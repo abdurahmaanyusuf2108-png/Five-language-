@@ -1,1 +1,1120 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="5 Languages">
+<meta name="theme-color" content="#7A2331">
+<title>Five Languages, One Adult</title>
+<link id="manifestLink" rel="manifest" href="">
+<style>
+  :root{
+    --parchment:#EDE0C8;
+    --parchment-2:#F4EBD6;
+    --card:#F6EEDB;
+    --card-edge: rgba(42,24,16,0.14);
+    --ink:#2B1810;
+    --ink-soft:#5A4630;
+    --muted:#8B7355;
+    --maroon:#7A2331;
+    --maroon-deep:#4A1620;
+    --gold:#B8863B;
+    --gold-light:#D4A855;
+    --teal:#1F6F6B;
+    --good:#3E7A4F;
+    --bad:#9C3B3B;
+ 
+    --ar: var(--gold);
+    --zu: var(--teal);
+    --es: var(--maroon);
+    --de: #3B5680;
+    --ru: #8B4A6B;
+ 
+    --accent: var(--gold);
+    --font-display: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Naskh Arabic",serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Courier New", monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    -webkit-tap-highlight-color: transparent;
+    min-height:100%;
+    display:flex;
+    justify-content:center;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    opacity:.5;
+    background:
+      radial-gradient(ellipse 700px 420px at 10% -8%, rgba(122,35,49,0.07), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 100% 110%, rgba(184,134,59,0.10), transparent 60%);
+    filter: url(#grain);
+  }
+  #app{
+    width:100%; max-width:480px; min-height:100dvh;
+    display:flex; flex-direction:column;
+    padding: env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0) 0;
+    position:relative; z-index:1;
+  }
+ 
+  /* ---------- motif band ---------- */
+  .motif-band{
+    height:9px;
+    background-color: var(--maroon);
+    background-image:
+      linear-gradient(135deg, var(--gold-light) 25%, transparent 25.5%),
+      linear-gradient(-135deg, var(--gold-light) 25%, transparent 25.5%);
+    background-size: 9px 9px;
+    opacity:.85;
+  }
+ 
+  /* ---------- header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px 8px;
+  }
+  .brand{ display:flex; align-items:center; gap:9px; }
+  .brand-mark{
+    width:26px; height:26px; position:relative; flex-shrink:0;
+  }
+  .brand-mark::before, .brand-mark::after{
+    content:""; position:absolute; inset:2px; border:1.6px solid var(--maroon);
+  }
+  .brand-mark::after{ transform:rotate(45deg); }
+  .brand-name{
+    font-family: var(--font-mono); font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .streak-pill{
+    display:flex; align-items:center; gap:5px;
+    background: rgba(122,35,49,0.08);
+    border:1px solid var(--card-edge);
+    border-radius:100px; padding:5px 11px;
+    font-family: var(--font-mono); font-size:12px; color:var(--maroon);
+  }
+ 
+  main{ flex:1; display:flex; flex-direction:column; padding: 10px 18px 14px; min-height:0; }
+ 
+  /* ---------- bottom nav ---------- */
+  nav.tabbar{
+    display:flex; border-top:1px solid var(--card-edge);
+    background: var(--parchment-2);
+  }
+  nav.tabbar button{
+    flex:1; background:none; border:none; padding:11px 4px 10px;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    color: var(--muted); font-family:var(--font-ui); font-size:10.5px; cursor:pointer;
+  }
+  nav.tabbar button .ic{ font-size:18px; line-height:1; }
+  nav.tabbar button.active{ color: var(--maroon); font-weight:600; }
+ 
+  /* ---------- dashboard ---------- */
+  .dash-hero{
+    text-align:center; padding: 10px 6px 4px;
+  }
+  .dash-hero h2{
+    font-family: var(--font-display); font-size:23px; margin:2px 0 4px; font-weight:600;
+  }
+  .dash-hero p{ font-size:13px; color:var(--ink-soft); margin:0; line-height:1.5; }
+ 
+  .medallion{
+    width:130px; height:130px; margin:14px auto 6px; position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .medallion::before, .medallion::after{
+    content:""; position:absolute; inset:8px; border:2px solid var(--accent);
+    filter: url(#inkTexture);
+  }
+  .medallion::after{ transform:rotate(45deg); }
+  .medallion-inner{
+    width:78px; height:78px; border-radius:50%; border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family: var(--font-mono); font-size:26px; color:var(--maroon); font-weight:600;
+  }
+ 
+  .lang-grid{ display:flex; flex-direction:column; gap:9px; margin-top:16px; }
+  .lang-row{
+    display:flex; align-items:center; gap:12px;
+    background: var(--card); border:1px solid var(--card-edge); border-radius:14px;
+    padding:11px 14px;
+  }
+  .lang-row .swatch{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .lang-row .lr-name{ font-size:13.5px; flex:1; }
+  .lang-row .lr-note{ font-size:11px; font-family:var(--font-mono); color:var(--muted); }
+  .lang-row.starving{ border-color: rgba(156,59,59,0.4); background: rgba(156,59,59,0.06); }
+  .lang-row.starving .lr-note{ color: var(--bad); }
+ 
+  .begin-btn{
+    margin-top:20px; width:100%; background: var(--maroon); color:var(--parchment-2);
+    border:none; border-radius:16px; padding:16px; font-size:15.5px; font-weight:600;
+    font-family: var(--font-ui); cursor:pointer; letter-spacing:.01em;
+  }
+  .begin-btn:active{ opacity:.88; }
+ 
+  .starving-banner{
+    margin-top:16px; background: rgba(156,59,59,0.08); border:1px solid rgba(156,59,59,0.3);
+    border-radius:14px; padding:13px 15px; font-size:12.5px; color: var(--maroon-deep); line-height:1.5;
+  }
+  .starving-banner b{ color: var(--bad); }
+ 
+  /* ---------- session card ---------- */
+  .stamp-wrap{ display:flex; justify-content:center; margin: 4px 0 2px; }
+  .stamp{ width:104px; height:104px; position:relative; display:flex; align-items:center; justify-content:center; }
+  .stamp::before, .stamp::after{ content:""; position:absolute; inset:5px; border:2px solid var(--accent); filter:url(#inkTexture); }
+  .stamp::after{ transform:rotate(45deg); }
+  .stamp-inner{
+    width:66px; height:66px; border-radius:50%; border:1px solid var(--accent);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  }
+  .stamp-native{ font-size:16px; font-weight:600; color:var(--maroon); }
+  .stamp-code{ font-family:var(--font-mono); font-size:8px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+ 
+  .card{
+    background: var(--card); border:1px solid var(--card-edge); border-radius:20px;
+    padding: 20px 20px 18px; margin-top:10px; flex:1; display:flex; flex-direction:column; min-height:0;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+  }
+  .card-tag{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.15em; text-transform:uppercase;
+    color: var(--accent); margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  }
+  .card-tag::before{ content:""; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+ 
+  .word-zone{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:6px; padding:4px 0 12px; }
+  .word-native{ font-family: var(--font-display); font-size:40px; font-weight:600; line-height:1.2; color:var(--maroon-deep); word-break:break-word; }
+  .word-translit{ font-family: var(--font-mono); font-size:15px; color: var(--ink-soft); }
+  .word-en{ margin-top:6px; font-size:14.5px; color: var(--muted); }
+ 
+  .hidden-zone{ text-align:center; padding: 18px 0; }
+  .hidden-zone .ph{ font-size:34px; margin-bottom:8px; color: var(--accent); }
+  .hidden-zone .hint{ font-size:13px; color:var(--muted); margin-bottom:14px; }
+ 
+  .replay-btn, .reveal-btn{
+    margin-top:12px; background: rgba(122,35,49,0.06); border:1px solid var(--card-edge); color:var(--ink);
+    padding:8px 16px; border-radius:100px; font-size:12.5px; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+  }
+  .reveal-btn{ background: var(--gold); color: var(--maroon-deep); border:none; font-weight:600; }
+ 
+  .action-zone{ display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:4px; }
+  .mic-btn{
+    width:70px; height:70px; border-radius:50%; border:none; background: var(--maroon);
+    color: var(--parchment-2); font-size:24px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition: transform .15s;
+  }
+  .mic-btn:active{ transform:scale(.94); }
+  .mic-btn.listening{ animation:pulse 1.1s infinite; }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(122,35,49,.32); }
+    70%{ box-shadow:0 0 0 16px rgba(122,35,49,0); }
+    100%{ box-shadow:0 0 0 0 rgba(122,35,49,0); }
+  }
+  .mic-label{ font-size:12px; color:var(--muted); }
+ 
+  .result-panel{ width:100%; display:flex; flex-direction:column; gap:11px; }
+  .heard-row{ background: rgba(122,35,49,0.05); border-radius:12px; padding:11px 13px; font-size:13.5px; color:var(--ink-soft); }
+  .heard-row b{ color:var(--ink); font-weight:600; }
+  .meter{ height:7px; border-radius:100px; background:rgba(42,24,16,0.09); overflow:hidden; }
+  .meter-fill{ height:100%; border-radius:100px; transition:width .4s; }
+  .meter-label{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; color:var(--muted); margin-top:4px; }
+  .verdict{ font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:6px; }
+  .verdict.pass{ color: var(--good); }
+  .verdict.fail{ color: var(--bad); }
+ 
+  .self-rate{ display:flex; gap:7px; }
+  .self-rate button{ flex:1; padding:9px 5px; border-radius:12px; border:1px solid var(--card-edge); background:rgba(122,35,49,0.03); color:var(--ink-soft); font-size:12px; cursor:pointer; }
+  .self-rate button.picked{ border-color: var(--accent); color: var(--maroon-deep); background: rgba(184,134,59,0.14); }
+ 
+  .next-btn{ margin-top:2px; background: var(--maroon-deep); color:var(--parchment-2); border:none; border-radius:14px; padding:14px; font-size:14.5px; font-weight:600; cursor:pointer; }
+  .next-btn:active{ opacity:.86; }
+ 
+  .session-bar{ display:flex; justify-content:space-between; align-items:center; padding:10px 4px 2px; font-family:var(--font-mono); font-size:10.5px; color:var(--muted); }
+  .session-bar .dim{ opacity:.7; }
+ 
+  /* ---------- panels ---------- */
+  .panel{ padding-top:2px; }
+  .panel h2{ font-family: var(--font-display); font-size:21px; margin:2px 0 14px; }
+  .panel h3{ font-size:11.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:20px 0 8px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--card-edge); gap:12px; }
+  .row:last-child{ border-bottom:none; }
+  .row-label{ font-size:14px; }
+  .row-sub{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .switch{ position:relative; width:42px; height:25px; border-radius:100px; background:rgba(42,24,16,0.13); cursor:pointer; flex-shrink:0; }
+  .switch.on{ background: var(--maroon); }
+  .switch::after{ content:""; position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%; background:#fff; transition:left .18s; }
+  .switch.on::after{ left:20px; }
+  select, input[type=text]{
+    background: var(--parchment-2); color:var(--ink); border:1px solid var(--card-edge);
+    border-radius:10px; padding:8px 10px; font-size:13.5px; font-family:var(--font-ui);
+  }
+  input[type=text]{ width:100%; margin-bottom:8px; }
+  .btn{ width:100%; padding:12.5px; border-radius:12px; border:1px solid var(--card-edge); background: var(--card); color:var(--ink); font-size:13.5px; margin-top:9px; cursor:pointer; text-align:center; }
+  .btn.primary{ background: var(--maroon); color:var(--parchment-2); border:none; font-weight:600; }
+  .btn.danger{ color: var(--bad); border-color: rgba(156,59,59,.35); }
+  .btn.small{ width:auto; padding:8px 14px; font-size:12.5px; }
+  .note{ font-size:12px; color:var(--muted); line-height:1.55; margin-top:7px; }
+ 
+  .custom-item{ display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-edge); font-size:13px; }
+  .custom-item button{ background:none; border:none; color:var(--bad); font-size:15px; cursor:pointer; padding:2px 6px; }
+ 
+  .stat-grid{ display:flex; flex-direction:column; gap:10px; }
+  .stat-card{ background:var(--card); border:1px solid var(--card-edge); border-radius:14px; padding:13px 15px; }
+  .stat-card.starving{ border-color: rgba(156,59,59,0.4); }
+  .stat-top{ display:flex; justify-content:space-between; align-items:baseline; }
+  .stat-lang{ font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .stat-lang .dot{ width:8px; height:8px; border-radius:50%; }
+  .stat-pct{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); }
+  .bar-track{ height:6px; background:rgba(42,24,16,0.08); border-radius:100px; margin-top:8px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:100px; }
+  .stat-sub{ display:flex; gap:12px; margin-top:7px; font-size:10.5px; color:var(--muted); font-family:var(--font-mono); flex-wrap:wrap; }
+  .starving-tag{ display:inline-block; margin-top:7px; font-size:10.5px; color:var(--bad); font-family:var(--font-mono); }
+ 
+  .empty-state{ text-align:center; padding: 50px 10px; color:var(--muted); }
+  .empty-state .big{ font-size:36px; margin-bottom:8px; color:var(--gold); }
+ 
+  a{ color: var(--maroon); }
+  ::selection{ background: rgba(184,134,59,0.35); }
+</style>
+</head>
+<body>
+ 
+<svg width="0" height="0" style="position:absolute">
+  <filter id="inkTexture">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise" seed="7"/>
+    <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.09  0 0 0 0 0.06  0 0 0 0.03 0"/>
+  </filter>
+</svg>
+ 
+<div id="app">
+  <div class="motif-band"></div>
+  <header>
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-name">five languages</div>
+    </div>
+    <div class="streak-pill" id="streakPill">&#128293; 0</div>
+  </header>
+ 
+  <main id="main"></main>
+ 
+  <nav class="tabbar" id="tabbar">
+    <button data-view="dashboard"><span class="ic">&#9707;</span>Home</button>
+    <button data-view="session"><span class="ic">&#127908;</span>Practice</button>
+    <button data-view="stats"><span class="ic">&#9776;</span>Stats</button>
+    <button data-view="settings"><span class="ic">&#9881;</span>Settings</button>
+  </nav>
+</div>
+ 
+<script>
+(function(){
+"use strict";
+ 
+/* =========================================================
+   1. CONTENT
+   ========================================================= */
+const LANGS = {
+  ar: { name:"Arabic",  native:"العربية", ttsLang:"ar-SA", recogLang:"ar-SA", rtl:true,  accentVar:"--ar" },
+  zu: { name:"Zulu",    native:"isiZulu", ttsLang:"zu-ZA", recogLang:"zu-ZA", rtl:false, accentVar:"--zu" },
+  es: { name:"Spanish", native:"Español", ttsLang:"es-ES", recogLang:"es-ES", rtl:false, accentVar:"--es" },
+  de: { name:"German",  native:"Deutsch", ttsLang:"de-DE", recogLang:"de-DE", rtl:false, accentVar:"--de" },
+  ru: { name:"Russian", native:"Русский", ttsLang:"ru-RU", recogLang:"ru-RU", rtl:false, accentVar:"--ru" }
+};
+const LANG_ORDER = ["ar","zu","es","de","ru"];
+ 
+const VOCAB = {
+  ar: { words:[
+      ["مرحبا","marhaban","hello","greeting"],["السلام عليكم","as-salaamu alaykum","peace be upon you (hi)","greeting"],
+      ["وعليكم السلام","wa alaykum as-salaam","and upon you peace (reply)","greeting"],["صباح الخير","sabah al-khayr","good morning","greeting"],
+      ["مساء الخير","masaa al-khayr","good evening","greeting"],["مع السلامة","ma'a as-salaama","goodbye","greeting"],
+      ["شكرا","shukran","thank you","greeting"],["من فضلك","min fadlik","please","greeting"],
+      ["واحد","waahid","one","number"],["اثنان","ithnaan","two","number"],["ثلاثة","thalaatha","three","number"],
+      ["أربعة","arba'a","four","number"],["خمسة","khamsa","five","number"],["ستة","sitta","six","number"],
+      ["سبعة","sab'a","seven","number"],["ثمانية","thamaaniya","eight","number"],["تسعة","tis'a","nine","number"],["عشرة","ashara","ten","number"],
+      ["ماء","maa'","water","object"],["خبز","khubz","bread","object"],["بيت","bayt","house","object"],["كتاب","kitaab","book","object"],
+      ["سيارة","sayyaara","car","object"],["باب","baab","door","object"],["طاولة","taawila","table","object"],["كرسي","kursi","chair","object"],
+      ["هاتف","haatif","phone","object"],["شمس","shams","sun","object"],["قمر","qamar","moon","object"],["صديق","sadiiq","friend","object"],
+      ["يأكل","ya'kul","to eat","verb"],["يشرب","yashrab","to drink","verb"],["يذهب","yadhhab","to go","verb"],["يرى","yaraa","to see","verb"],
+      ["يريد","yuriid","to want","verb"],["يتكلم","yatakallam","to speak","verb"],["يعرف","ya'rif","to know","verb"],
+      ["ينام","yanaam","to sleep","verb"],["يكتب","yaktub","to write","verb"],["يقرأ","yaqra'","to read","verb"]
+    ], phrases:[
+      ["ما اسمك؟","maa ismuk?","what is your name?"],["اسمي...","ismi...","my name is..."],["كيف حالك؟","kayfa haaluk?","how are you?"],
+      ["بخير","bikhayr","I am fine"],["لا أفهم","laa afham","I don't understand"],["أين الحمام؟","ayna al-hammaam?","where is the bathroom?"],
+      ["أريد ماء","uriid maa'","I want water"],["تشرفنا","tasharrafnaa","nice to meet you"]
+    ]},
+  zu: { words:[
+      ["sawubona",null,"hello (to one)","greeting"],["sanibonani",null,"hello (to many)","greeting"],["unjani",null,"how are you","greeting"],
+      ["ngiyaphila",null,"I'm fine","greeting"],["hamba kahle",null,"goodbye (to one leaving)","greeting"],["sala kahle",null,"goodbye (to one staying)","greeting"],
+      ["ngiyabonga",null,"thank you","greeting"],["ngicela",null,"please","greeting"],
+      ["kunye",null,"one","number"],["kubili",null,"two","number"],["kuthathu",null,"three","number"],["kune",null,"four","number"],
+      ["kuhlanu",null,"five","number"],["isithupha",null,"six","number"],["isikhombisa",null,"seven","number"],
+      ["isishiyagalombili",null,"eight","number"],["isishiyagalolunye",null,"nine","number"],["ishumi",null,"ten","number"],
+      ["amanzi",null,"water","object"],["ukudla",null,"food","object"],["indlu",null,"house","object"],["incwadi",null,"book","object"],
+      ["imoto",null,"car","object"],["umnyango",null,"door","object"],["itafula",null,"table","object"],["isihlalo",null,"chair","object"],
+      ["ifoni",null,"phone","object"],["ilanga",null,"sun","object"],["inyanga",null,"moon","object"],["umngane",null,"friend","object"],
+      ["ukudla",null,"to eat","verb"],["ukuphuza",null,"to drink","verb"],["ukuhamba",null,"to go","verb"],["ukubona",null,"to see","verb"],
+      ["ukufuna",null,"to want","verb"],["ukukhuluma",null,"to speak","verb"],["ukwazi",null,"to know","verb"],
+      ["ukulala",null,"to sleep","verb"],["ukubhala",null,"to write","verb"],["ukufunda",null,"to read","verb"]
+    ], phrases:[
+      ["Ubani igama lakho?",null,"what is your name?"],["Igama lami ngu...",null,"my name is..."],["Unjani?",null,"how are you?"],
+      ["Ngikhona",null,"I am fine"],["Angizwisisi",null,"I don't understand"],["Likuphi ithoyilethi?",null,"where is the bathroom?"],
+      ["Ngifuna amanzi",null,"I want water"],["Ngiyajabula ukukwazi",null,"nice to meet you"]
+    ]},
+  es: { words:[
+      ["hola",null,"hello","greeting"],["buenos días",null,"good morning","greeting"],["buenas tardes",null,"good afternoon","greeting"],
+      ["buenas noches",null,"good night","greeting"],["adiós",null,"goodbye","greeting"],["gracias",null,"thank you","greeting"],
+      ["por favor",null,"please","greeting"],["de nada",null,"you're welcome","greeting"],
+      ["uno",null,"one","number"],["dos",null,"two","number"],["tres",null,"three","number"],["cuatro",null,"four","number"],
+      ["cinco",null,"five","number"],["seis",null,"six","number"],["siete",null,"seven","number"],["ocho",null,"eight","number"],
+      ["nueve",null,"nine","number"],["diez",null,"ten","number"],
+      ["agua",null,"water","object"],["pan",null,"bread","object"],["casa",null,"house","object"],["libro",null,"book","object"],
+      ["coche",null,"car","object"],["puerta",null,"door","object"],["mesa",null,"table","object"],["silla",null,"chair","object"],
+      ["teléfono",null,"phone","object"],["sol",null,"sun","object"],["luna",null,"moon","object"],["amigo",null,"friend","object"],
+      ["comer",null,"to eat","verb"],["beber",null,"to drink","verb"],["ir",null,"to go","verb"],["ver",null,"to see","verb"],
+      ["querer",null,"to want","verb"],["hablar",null,"to speak","verb"],["saber",null,"to know","verb"],
+      ["dormir",null,"to sleep","verb"],["escribir",null,"to write","verb"],["leer",null,"to read","verb"]
+    ], phrases:[
+      ["¿Cómo te llamas?",null,"what is your name?"],["Me llamo...",null,"my name is..."],["¿Cómo estás?",null,"how are you?"],
+      ["Estoy bien",null,"I am fine"],["No entiendo",null,"I don't understand"],["¿Dónde está el baño?",null,"where is the bathroom?"],
+      ["Quiero agua",null,"I want water"],["Mucho gusto",null,"nice to meet you"]
+    ]},
+  de: { words:[
+      ["hallo",null,"hello","greeting"],["guten Morgen",null,"good morning","greeting"],["guten Tag",null,"good day","greeting"],
+      ["guten Abend",null,"good evening","greeting"],["auf Wiedersehen",null,"goodbye","greeting"],["danke",null,"thank you","greeting"],
+      ["bitte",null,"please","greeting"],["tschüss",null,"bye","greeting"],
+      ["eins",null,"one","number"],["zwei",null,"two","number"],["drei",null,"three","number"],["vier",null,"four","number"],
+      ["fünf",null,"five","number"],["sechs",null,"six","number"],["sieben",null,"seven","number"],["acht",null,"eight","number"],
+      ["neun",null,"nine","number"],["zehn",null,"ten","number"],
+      ["Wasser",null,"water","object"],["Brot",null,"bread","object"],["Haus",null,"house","object"],["Buch",null,"book","object"],
+      ["Auto",null,"car","object"],["Tür",null,"door","object"],["Tisch",null,"table","object"],["Stuhl",null,"chair","object"],
+      ["Telefon",null,"phone","object"],["Sonne",null,"sun","object"],["Mond",null,"moon","object"],["Freund",null,"friend","object"],
+      ["essen",null,"to eat","verb"],["trinken",null,"to drink","verb"],["gehen",null,"to go","verb"],["sehen",null,"to see","verb"],
+      ["wollen",null,"to want","verb"],["sprechen",null,"to speak","verb"],["wissen",null,"to know","verb"],
+      ["schlafen",null,"to sleep","verb"],["schreiben",null,"to write","verb"],["lesen",null,"to read","verb"]
+    ], phrases:[
+      ["Wie heißt du?",null,"what is your name?"],["Ich heiße...",null,"my name is..."],["Wie geht's?",null,"how are you?"],
+      ["Mir geht's gut",null,"I am fine"],["Ich verstehe nicht",null,"I don't understand"],["Wo ist die Toilette?",null,"where is the bathroom?"],
+      ["Ich möchte Wasser",null,"I want water"],["Freut mich",null,"nice to meet you"]
+    ]},
+  ru: { words:[
+      ["привет","privet","hello","greeting"],["здравствуйте","zdravstvuyte","hello (formal)","greeting"],["доброе утро","dobroye utro","good morning","greeting"],
+      ["добрый вечер","dobryy vecher","good evening","greeting"],["до свидания","do svidaniya","goodbye","greeting"],["спасибо","spasibo","thank you","greeting"],
+      ["пожалуйста","pozhaluysta","please","greeting"],["не за что","ne za chto","you're welcome","greeting"],
+      ["один","odin","one","number"],["два","dva","two","number"],["три","tri","three","number"],["четыре","chetyre","four","number"],
+      ["пять","pyat'","five","number"],["шесть","shest'","six","number"],["семь","sem'","seven","number"],["восемь","vosem'","eight","number"],
+      ["девять","devyat'","nine","number"],["десять","desyat'","ten","number"],
+      ["вода","voda","water","object"],["хлеб","khleb","bread","object"],["дом","dom","house","object"],["книга","kniga","book","object"],
+      ["машина","mashina","car","object"],["дверь","dver'","door","object"],["стол","stol","table","object"],["стул","stul","chair","object"],
+      ["телефон","telefon","phone","object"],["солнце","solntse","sun","object"],["луна","luna","moon","object"],["друг","drug","friend","object"],
+      ["есть","yest'","to eat","verb"],["пить","pit'","to drink","verb"],["идти","idti","to go","verb"],["видеть","videt'","to see","verb"],
+      ["хотеть","khotet'","to want","verb"],["говорить","govorit'","to speak","verb"],["знать","znat'","to know","verb"],
+      ["спать","spat'","to sleep","verb"],["писать","pisat'","to write","verb"],["читать","chitat'","to read","verb"]
+    ], phrases:[
+      ["Как тебя зовут?","Kak tebya zovut?","what is your name?"],["Меня зовут...","Menya zovut...","my name is..."],["Как дела?","Kak dela?","how are you?"],
+      ["Всё хорошо","Vsyo khorosho","I am fine"],["Я не понимаю","Ya ne ponimayu","I don't understand"],["Где туалет?","Gde tualet?","where is the bathroom?"],
+      ["Я хочу воды","Ya khochu vody","I want water"],["Приятно познакомиться","Priyatno poznakomit'sya","nice to meet you"]
+    ]}
+};
+ 
+const BUILTIN_ITEMS = {};
+LANG_ORDER.forEach(lang=>{
+  VOCAB[lang].words.forEach((w,i)=>{
+    const id = lang+"-vocab-"+i;
+    BUILTIN_ITEMS[id] = { id, lang, tier:"vocab", native:w[0], translit:w[1], en:w[2], cat:w[3] };
+  });
+  VOCAB[lang].phrases.forEach((p,i)=>{
+    const id = lang+"-phrase-"+i;
+    BUILTIN_ITEMS[id] = { id, lang, tier:"phrase", native:p[0], translit:p[1], en:p[2], cat:"phrase" };
+  });
+});
+ 
+let ITEMS = {};
+let ITEMS_BY_LANG = {};
+function rebuildItemsIndex(){
+  ITEMS = Object.assign({}, BUILTIN_ITEMS);
+  (state.customItems||[]).forEach(it=> ITEMS[it.id] = it);
+  ITEMS_BY_LANG = {};
+  LANG_ORDER.forEach(l=> ITEMS_BY_LANG[l] = Object.values(ITEMS).filter(it=>it.lang===l));
+}
+ 
+/* =========================================================
+   2. STATE
+   ========================================================= */
+const STORAGE_KEY = "fivelang_state_v2";
+ 
+function defaultState(){
+  return {
+    settings: {
+      dailyBudgetMin: 15,
+      background: { ar:false, zu:true, es:false, de:false, ru:false },
+      newCapBackground: 5,
+      newCapZero: 3,
+      onboarded: false,
+      audioFirstMode: false,
+      voicePref: {}
+    },
+    items: {},
+    customItems: [],
+    streak: { current:0, longest:0, lastActiveDate:null }
+  };
+}
+let state = loadState();
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    const d = defaultState();
+    return {
+      settings: Object.assign(d.settings, parsed.settings||{}),
+      items: parsed.items || {},
+      customItems: parsed.customItems || [],
+      streak: Object.assign(d.streak, parsed.streak||{})
+    };
+  }catch(e){ console.warn("could not read saved progress, starting fresh", e); return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e){ console.warn("could not save progress", e); }
+}
+function getRecord(id){
+  if(!state.items[id]) state.items[id] = { introduced:false, streak:0, mastered:false, dueDate:null, lastSeen:null, history:[] };
+  return state.items[id];
+}
+rebuildItemsIndex();
+ 
+/* =========================================================
+   3. DATE HELPERS
+   ========================================================= */
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addDaysISO(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function isDue(dueDate){ return !dueDate || dueDate <= todayISO(); }
+ 
+/* =========================================================
+   4. TEXT MATCHING
+   ========================================================= */
+function normalizeText(s){
+  if(!s) return "";
+  let x = s.toLowerCase().trim();
+  x = x.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  x = x.replace(/[\u064B-\u065F\u0670]/g,"");
+  x = x.replace(/[^\p{L}\p{N}\s']/gu,"");
+  x = x.replace(/\s+/g," ").trim();
+  return x;
+}
+function levenshtein(a,b){
+  const m=a.length, n=b.length;
+  if(m===0) return n; if(n===0) return m;
+  const dp = new Array(n+1);
+  for(let j=0;j<=n;j++) dp[j]=j;
+  for(let i=1;i<=m;i++){
+    let prev = dp[0]; dp[0]=i;
+    for(let j=1;j<=n;j++){
+      const tmp = dp[j];
+      dp[j] = Math.min(dp[j]+1, dp[j-1]+1, prev + (a[i-1]===b[j-1]?0:1));
+      prev = tmp;
+    }
+  }
+  return dp[n];
+}
+function confidenceScore(expected, heard){
+  const e = normalizeText(expected), h = normalizeText(heard);
+  if(!h) return 0;
+  const dist = levenshtein(e,h);
+  const maxLen = Math.max(e.length, h.length, 1);
+  return Math.max(0, Math.min(100, Math.round(100*(1-dist/maxLen))));
+}
+const PASS_THRESHOLD = 45;
+ 
+/* =========================================================
+   5. SPEECH
+   ========================================================= */
+let voicesCache = [];
+function loadVoices(){ voicesCache = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function voicesForLang(langTag){
+  const prefix = langTag.split("-")[0];
+  return voicesCache.filter(v=> v.lang && v.lang.toLowerCase().startsWith(prefix));
+}
+function speak(text, lang){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const langTag = LANGS[lang].ttsLang;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langTag;
+  const preferred = state.settings.voicePref[lang];
+  let match = null;
+  if(preferred) match = voicesCache.find(v=> (v.name+"|"+v.lang)===preferred);
+  if(!match) match = voicesCache.find(v=>v.lang===langTag) || voicesForLang(langTag)[0];
+  if(match) u.voice = match;
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+function recognitionSupported(){ return !!SR; }
+function listenOnce(langTag, onResult, onError){
+  if(!SR){ onError("unsupported"); return null; }
+  const rec = new SR();
+  rec.lang = langTag; rec.interimResults=false; rec.maxAlternatives=3; rec.continuous=false;
+  let done=false;
+  rec.onresult = (e)=>{ done=true; onResult(Array.from(e.results[0]).map(a=>a.transcript)); };
+  rec.onerror = (e)=>{ if(!done){ done=true; onError(e.error||"error"); } };
+  rec.onend = ()=>{ if(!done){ done=true; onError("no-speech"); } };
+  try{ rec.start(); }catch(err){ onError("start-failed"); return null; }
+  return rec;
+}
+ 
+/* =========================================================
+   6. SESSION ENGINE
+   ========================================================= */
+let session = null;
+function newItemCap(lang){ return state.settings.background[lang] ? state.settings.newCapBackground : state.settings.newCapZero; }
+function phrasesUnlocked(lang){
+  const introducedVocab = ITEMS_BY_LANG[lang].filter(it=>it.tier==="vocab" && getRecord(it.id).introduced).length;
+  return introducedVocab >= 20;
+}
+function startSession(){
+  session = {
+    startTime: Date.now(), turn:0, lastLang:null,
+    newIntroducedCount: Object.fromEntries(LANG_ORDER.map(l=>[l,0])),
+    requeue: [], currentItem:null, currentIsNew:false, revealed:!state.settings.audioFirstMode,
+    answeredCount:0
+  };
+  setView("session");
+}
+function poolsForLang(lang){
+  const all = ITEMS_BY_LANG[lang];
+  const unlocked = phrasesUnlocked(lang);
+  const usable = all.filter(it=> it.tier==="vocab" || unlocked);
+  const due = usable.filter(it=>{ const r=getRecord(it.id); return r.introduced && isDue(r.dueDate); });
+  const fresh = usable.filter(it=> !getRecord(it.id).introduced);
+  return { due, fresh };
+}
+function pickNextItem(){
+  session.turn++;
+  const t = session.turn;
+  const readyIdx0 = session.requeue.findIndex(r=> r.dueTurn<=t && r.lang!==session.lastLang);
+  const readyIdx = readyIdx0>=0 ? readyIdx0 : session.requeue.findIndex(r=> r.dueTurn<=t);
+  if(readyIdx>=0){ const entry = session.requeue.splice(readyIdx,1)[0]; return { item: ITEMS[entry.id], isNew:false }; }
+  const langsPreferred = LANG_ORDER.filter(l=>l!==session.lastLang);
+  function tryLangs(list){
+    const shuffled = [...list].sort(()=>Math.random()-0.5);
+    for(const lang of shuffled){
+      const {due} = poolsForLang(lang);
+      if(due.length){ due.sort((a,b)=> (getRecord(a.id).dueDate||"") < (getRecord(b.id).dueDate||"") ? -1:1); return { item:due[0], isNew:false }; }
+    }
+    for(const lang of shuffled){
+      if(session.newIntroducedCount[lang] >= newItemCap(lang)) continue;
+      const {fresh} = poolsForLang(lang);
+      if(fresh.length) return { item:fresh[0], isNew:true };
+    }
+    return null;
+  }
+  return tryLangs(langsPreferred) || tryLangs(LANG_ORDER);
+}
+function registerActivity(){
+  const today = todayISO();
+  const st = state.streak;
+  if(st.lastActiveDate === today) return;
+  const y = addDaysISO(-1);
+  st.current = (st.lastActiveDate === y) ? (st.current||0)+1 : 1;
+  st.longest = Math.max(st.longest||0, st.current);
+  st.lastActiveDate = today;
+  saveState();
+  renderStreakPill();
+}
+function recordAnswer(item, passed, confidence, selfRating, heardText){
+  const rec = getRecord(item.id);
+  const wasIntroduced = rec.introduced;
+  rec.introduced = true; rec.lastSeen = todayISO();
+  rec.history.push({ date: todayISO(), result: passed?"correct":"incorrect", confidence, selfRating: selfRating||null, heard: heardText||null });
+  if(rec.history.length>60) rec.history = rec.history.slice(-60);
+  if(passed){
+    rec.streak = (rec.streak||0)+1;
+    if(rec.streak===1) rec.dueDate = addDaysISO(1);
+    else if(rec.streak===2) rec.dueDate = addDaysISO(4);
+    else{ if(!rec.mastered){ rec.mastered=true; rec.dueDate=addDaysISO(7);} else { rec.dueDate=addDaysISO(30); } }
+  } else {
+    rec.streak = 0; rec.mastered = false; rec.dueDate = addDaysISO(1);
+    session.requeue.push({ id:item.id, lang:item.lang, dueTurn: session.turn+3 });
+  }
+  if(!wasIntroduced) session.newIntroducedCount[item.lang] = (session.newIntroducedCount[item.lang]||0)+1;
+  saveState();
+}
+ 
+/* =========================================================
+   7. STATS
+   ========================================================= */
+function computeWeeklyStats(){
+  const cutoff = addDaysISO(-7);
+  const stats = {};
+  LANG_ORDER.forEach(l=>{
+    let correct=0,total=0,mastered=0,introduced=0;
+    ITEMS_BY_LANG[l].forEach(item=>{
+      const rec = state.items[item.id]; if(!rec) return;
+      if(rec.introduced) introduced++;
+      if(rec.mastered) mastered++;
+      rec.history.filter(h=>h.date>=cutoff).forEach(h=>{ total++; if(h.result==="correct") correct++; });
+    });
+    stats[l] = { correct, total, pct: total? Math.round(100*correct/total): null, mastered, introduced, poolSize: ITEMS_BY_LANG[l].length };
+  });
+  return stats;
+}
+function findStarving(stats){
+  const withData = LANG_ORDER.filter(l=> stats[l].total>=5);
+  if(withData.length<2) return [];
+  const avg = withData.reduce((s,l)=>s+stats[l].pct,0)/withData.length;
+  return withData.filter(l=> stats[l].pct <= avg-15 && stats[l].pct<70);
+}
+ 
+/* =========================================================
+   8. RENDER HELPERS
+   ========================================================= */
+const $main = document.getElementById("main");
+function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+function setAccent(lang){
+  const v = getComputedStyle(document.documentElement).getPropertyValue(LANGS[lang].accentVar).trim();
+  document.documentElement.style.setProperty("--accent", v);
+}
+function renderStreakPill(){
+  document.getElementById("streakPill").innerHTML = "&#128293; " + (state.streak.current||0);
+}
+function setActiveTab(view){
+  document.querySelectorAll("#tabbar button").forEach(b=> b.classList.toggle("active", b.dataset.view===view));
+}
+ 
+let currentView = null;
+function setView(view){
+  currentView = view;
+  setActiveTab(view);
+  if(view==="dashboard") renderDashboard();
+  else if(view==="session"){ if(!session) startSession(); else renderSessionTurn(); }
+  else if(view==="stats") renderStats();
+  else if(view==="settings") renderSettings();
+}
+document.querySelectorAll("#tabbar button").forEach(b=>{
+  b.onclick = ()=> setView(b.dataset.view);
+});
+renderStreakPill();
+ 
+/* =========================================================
+   9. DASHBOARD
+   ========================================================= */
+function renderDashboard(){
+  document.documentElement.style.setProperty("--accent","var(--maroon)");
+  const stats = computeWeeklyStats();
+  const starving = findStarving(stats);
+  const bg = state.settings.background;
+  const rows = LANG_ORDER.map(l=>{
+    const s = stats[l];
+    const isStarving = starving.includes(l);
+    const note = s.total ? (s.pct+"% this week") : "no reviews yet";
+    return `<div class="lang-row ${isStarving?'starving':''}">
+      <div class="swatch" style="background:var(${LANGS[l].accentVar})"></div>
+      <div class="lr-name">${LANGS[l].name}${bg[l]?' <span style="color:var(--muted); font-size:11px;">&middot; background</span>':''}</div>
+      <div class="lr-note">${isStarving?'&#9888; falling behind':note}</div>
+    </div>`;
+  }).join("");
+ 
+  $main.innerHTML = `
+    <div class="dash-hero">
+      <div class="medallion"><div class="medallion-inner">5</div></div>
+      <h2>Five Languages, One Adult</h2>
+      <p>Arabic &middot; isiZulu &middot; Spanish &middot; German &middot; Russian, one rotating session.</p>
+    </div>
+    <div class="lang-grid">${rows}</div>
+    ${starving.length ? `<div class="starving-banner"><b>${starving.map(l=>LANGS[l].name).join(" and ")}</b> ${starving.length>1?'are':'is'} trailing the rest this week — worth consolidating (fewer new words, more review) rather than pushing forward.</div>` : ``}
+    <button class="begin-btn" id="beginBtn">Begin today's session</button>
+  `;
+  document.getElementById("beginBtn").onclick = ()=> startSession();
+}
+ 
+/* =========================================================
+   10. SESSION VIEW
+   ========================================================= */
+function renderSessionTurn(){
+  if(!session){ startSession(); return; }
+  const picked = pickNextItem();
+  if(!picked){ renderAllCaughtUp(); return; }
+  session.currentItem = picked.item;
+  session.currentIsNew = picked.isNew;
+  session.revealed = !state.settings.audioFirstMode;
+  session.lastLang = picked.item.lang;
+  renderCurrentCard();
+  speak(picked.item.native, picked.item.lang);
+}
+function renderCurrentCard(){
+  const item = session.currentItem;
+  const lang = LANGS[item.lang];
+  setAccent(item.lang);
+  const catLabel = item.tier==="phrase" ? "phrase" : item.cat;
+  const budgetMs = state.settings.dailyBudgetMin*60000;
+  const elapsedMs = Date.now()-session.startTime;
+ 
+  const wordZoneHtml = session.revealed ? `
+    <div class="word-native" dir="${lang.rtl?'rtl':'ltr'}">${escapeHtml(item.native)}</div>
+    ${item.translit ? `<div class="word-translit">${escapeHtml(item.translit)}</div>` : ``}
+    <div class="word-en">${escapeHtml(item.en)}</div>
+    <button class="replay-btn" id="replayBtn">&#9658; hear it again</button>
+  ` : `
+    <div class="hidden-zone">
+      <div class="ph">&#9835;</div>
+      <div class="hint">listen, then say it back — reveal when you're ready to check</div>
+      <button class="replay-btn" id="replayBtn">&#9658; hear it again</button><br>
+      <button class="reveal-btn" id="revealBtn">reveal word</button>
+    </div>
+  `;
+ 
+  $main.innerHTML = `
+    <div class="stamp-wrap"><div class="stamp"><div class="stamp-inner">
+      <div class="stamp-native" style="direction:${lang.rtl?'rtl':'ltr'}">${escapeHtml(lang.native)}</div>
+      <div class="stamp-code">${item.lang}</div>
+    </div></div></div>
+    <div class="card">
+      <div class="card-tag">${lang.name} &middot; ${catLabel}${session.currentIsNew?" &middot; new":""}</div>
+      <div class="word-zone">${wordZoneHtml}</div>
+      <div class="action-zone" id="actionZone">
+        <button class="mic-btn" id="micBtn">&#127908;</button>
+        <div class="mic-label" id="micLabel">${recognitionSupported() ? "tap and say it out loud" : "mic input not supported here — rate yourself after listening"}</div>
+      </div>
+    </div>
+    <div class="session-bar">
+      <span>${Math.floor(elapsedMs/60000)}:${String(Math.floor((elapsedMs%60000)/1000)).padStart(2,"0")} <span class="dim">/ ${state.settings.dailyBudgetMin}:00</span></span>
+      <span>${session.answeredCount} reviewed today</span>
+    </div>
+  `;
+  document.getElementById("replayBtn").onclick = ()=> speak(item.native, item.lang);
+  const revealBtn = document.getElementById("revealBtn");
+  if(revealBtn) revealBtn.onclick = ()=>{ session.revealed = true; renderCurrentCard(); };
+  document.getElementById("micBtn").onclick = ()=> handleMic(item, lang);
+}
+function handleMic(item, lang){
+  const micBtn = document.getElementById("micBtn");
+  const micLabel = document.getElementById("micLabel");
+  if(!recognitionSupported()){ showResult(item, lang, null, null); return; }
+  micBtn.classList.add("listening"); micLabel.textContent = "listening…"; micBtn.disabled = true;
+  listenOnce(lang.ttsLang,
+    (alternatives)=>{
+      micBtn.classList.remove("listening");
+      let best = { text:"", score:-1 };
+      alternatives.forEach(t=>{ const s = confidenceScore(item.native, t); if(s>best.score) best = { text:t, score:s }; });
+      session.revealed = true;
+      showResult(item, lang, best.text, best.score);
+    },
+    (err)=>{
+      micBtn.classList.remove("listening");
+      micLabel.textContent = err==="not-allowed" ? "microphone permission denied" : "didn't catch that — try again or rate yourself";
+      micBtn.disabled = false;
+    }
+  );
+}
+function showResult(item, lang, heardText, confidence){
+  const passed = confidence!==null && confidence>=PASS_THRESHOLD;
+  const hasAuto = confidence!==null;
+  renderCurrentCard();
+  const $zone = document.getElementById("actionZone");
+  $zone.innerHTML = `
+    <div class="result-panel">
+      ${hasAuto ? `
+        <div class="heard-row">you said: <b>${escapeHtml(heardText||"(nothing heard)")}</b></div>
+        <div>
+          <div class="meter"><div class="meter-fill" style="width:${confidence}%; background:${passed?'var(--good)':'var(--bad)'}"></div></div>
+          <div class="meter-label"><span>confidence</span><span>${confidence}%</span></div>
+        </div>
+        <div class="verdict ${passed?'pass':'fail'}">${passed? '&#10003; close enough' : '&#10005; try again next time'}</div>
+      ` : `<div class="heard-row">no automatic scoring available — rate your own attempt</div>`}
+      <div>
+        <div class="row-sub" style="margin-bottom:6px;">how did it feel?</div>
+        <div class="self-rate" id="selfRate">
+          <button data-v="good">felt right</button>
+          <button data-v="unsure">not sure</button>
+          <button data-v="bad">way off</button>
+        </div>
+      </div>
+      <button class="next-btn" id="nextBtn">next</button>
+    </div>
+  `;
+  let selfRating = null;
+  document.querySelectorAll("#selfRate button").forEach(b=>{
+    b.onclick = ()=>{ document.querySelectorAll("#selfRate button").forEach(x=>x.classList.remove("picked")); b.classList.add("picked"); selfRating=b.dataset.v; };
+  });
+  document.getElementById("nextBtn").onclick = ()=>{
+    const finalPassed = hasAuto ? passed : (selfRating==="good");
+    if(session.answeredCount===0) registerActivity();
+    recordAnswer(item, finalPassed, hasAuto?confidence:null, selfRating, heardText);
+    session.answeredCount++;
+    renderSessionTurn();
+  };
+}
+function renderAllCaughtUp(){
+  document.documentElement.style.setProperty("--accent","var(--maroon)");
+  const elapsedMin = Math.round((Date.now()-session.startTime)/60000);
+  $main.innerHTML = `
+    <div class="empty-state">
+      <div class="big">&#10022;</div>
+      <div style="font-size:15px; color:var(--ink); margin-bottom:6px; font-family:var(--font-display);">All caught up for now</div>
+      <div style="font-size:12.5px;">${session.answeredCount} reviewed &middot; ${elapsedMin} min this session</div>
+      <button class="btn primary" id="restartBtn" style="margin-top:20px;">start another round</button>
+      <button class="btn" id="homeBtn">back to home</button>
+    </div>
+  `;
+  document.getElementById("restartBtn").onclick = ()=> startSession();
+  document.getElementById("homeBtn").onclick = ()=> setView("dashboard");
+}
+ 
+/* =========================================================
+   11. STATS VIEW
+   ========================================================= */
+function renderStats(){
+  document.documentElement.style.setProperty("--accent","var(--maroon)");
+  const stats = computeWeeklyStats();
+  const starving = findStarving(stats);
+  let rows = "";
+  LANG_ORDER.forEach(l=>{
+    const s = stats[l];
+    const accent = `var(${LANGS[l].accentVar})`;
+    const isStarving = starving.includes(l);
+    rows += `
+      <div class="stat-card ${isStarving?'starving':''}">
+        <div class="stat-top">
+          <div class="stat-lang"><span class="dot" style="background:${accent}"></span>${LANGS[l].name}</div>
+          <div class="stat-pct">${s.pct===null? "no data yet" : s.pct+"% this week"}</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${s.pct||0}%; background:${accent}"></div></div>
+        <div class="stat-sub">
+          <span>${s.introduced}/${s.poolSize} introduced</span>
+          <span>${s.mastered} mastered</span>
+          <span>${s.total} reviews (7d)</span>
+        </div>
+        ${isStarving ? `<div class="starving-tag">&#9888; falling behind the others — consider consolidating</div>` : ``}
+      </div>
+    `;
+  });
+  $main.innerHTML = `
+    <div class="panel">
+      <h2>This week</h2>
+      <div class="row" style="border:none; padding-top:0;">
+        <div class="row-label">Current streak</div>
+        <div class="row-sub" style="margin:0; font-size:13px;">&#128293; ${state.streak.current||0} days &middot; best ${state.streak.longest||0}</div>
+      </div>
+      <div class="stat-grid" style="margin-top:8px;">${rows}</div>
+      <button class="btn" id="exportBtn2">Copy this week's log (for weekly plan prompt)</button>
+    </div>
+  `;
+  document.getElementById("exportBtn2").onclick = doExport;
+}
+ 
+/* =========================================================
+   12. SETTINGS VIEW
+   ========================================================= */
+function renderSettings(){
+  document.documentElement.style.setProperty("--accent","var(--maroon)");
+  const s = state.settings;
+  $main.innerHTML = `
+    <div class="panel">
+      <h2>Settings</h2>
+ 
+      <h3>Daily session</h3>
+      <div class="row">
+        <div><div class="row-label">Default length</div><div class="row-sub">tracked, not enforced</div></div>
+        <select id="budgetSelect">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
+      </div>
+      <div class="row">
+        <div><div class="row-label">Audio-first mode</div><div class="row-sub">hide text until you attempt recall from audio alone</div></div>
+        <div class="switch ${s.audioFirstMode?'on':''}" id="audioFirstSwitch"></div>
+      </div>
+ 
+      <h3>Background</h3>
+      <div class="note" style="margin-top:-4px; margin-bottom:4px;">More new words per session (${s.newCapBackground} vs ${s.newCapZero}) for languages you already know.</div>
+      ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
+ 
+      <h3>Voices</h3>
+      <div class="note" style="margin-top:-4px; margin-bottom:6px;">
+        These are synthetic voices built into your browser/device — not recordings of real speakers. I can't source or fabricate
+        genuine native-speaker audio here, but you can pick whichever installed voice sounds best for each language.
+      </div>
+      ${LANG_ORDER.map(l=>renderVoiceRow(l)).join("")}
+ 
+      <h3>Add your own words</h3>
+      <div class="note" style="margin-top:-4px;">Extend any language's vocabulary — your additions get reviewed on the same schedule.</div>
+      ${LANG_ORDER.map(l=>renderCustomWordsBlock(l)).join("")}
+ 
+      <h3>Your data</h3>
+      <button class="btn" id="exportBtn">Copy this week's log (for weekly plan prompt)</button>
+      <button class="btn danger" id="resetBtn">Reset all progress</button>
+      <div class="note">Progress is stored only on this device, in this browser. Nothing is uploaded anywhere.</div>
+    </div>
+  `;
+ 
+  document.getElementById("budgetSelect").onchange = (e)=>{ s.dailyBudgetMin = parseInt(e.target.value,10); saveState(); };
+  document.getElementById("audioFirstSwitch").onclick = (el)=>{
+    s.audioFirstMode = !s.audioFirstMode; saveState(); renderSettings();
+  };
+  document.querySelectorAll(".switch[data-lang]").forEach(sw=>{
+    sw.onclick = ()=>{ const l=sw.dataset.lang; s.background[l]=!s.background[l]; sw.classList.toggle("on", s.background[l]); saveState(); };
+  });
+  LANG_ORDER.forEach(l=>{
+    const sel = document.getElementById("voiceSelect-"+l);
+    if(sel) sel.onchange = (e)=>{ s.voicePref[l] = e.target.value; saveState(); };
+    const testBtn = document.getElementById("voiceTest-"+l);
+    if(testBtn) testBtn.onclick = ()=>{ const sample = VOCAB[l].words[0][0]; speak(sample, l); };
+    const addBtn = document.getElementById("addWord-"+l);
+    if(addBtn) addBtn.onclick = ()=> addCustomWord(l);
+  });
+  document.querySelectorAll(".custom-item button[data-del]").forEach(b=>{
+    b.onclick = ()=> deleteCustomWord(b.dataset.del);
+  });
+  document.getElementById("exportBtn").onclick = doExport;
+  document.getElementById("resetBtn").onclick = ()=>{
+    if(confirm("This clears all review history and progress on this device. Continue?")){
+      state.items = {}; saveState(); session = null; setView("dashboard");
+    }
+  };
+}
+function renderVoiceRow(l){
+  const langTag = LANGS[l].ttsLang;
+  const options = voicesForLang(langTag);
+  const current = state.settings.voicePref[l] || "";
+  return `
+    <div class="row">
+      <div class="row-label">${LANGS[l].name}</div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <select id="voiceSelect-${l}" style="max-width:150px;">
+          <option value="">auto</option>
+          ${options.map(v=>`<option value="${escapeHtml(v.name+"|"+v.lang)}" ${current===(v.name+"|"+v.lang)?"selected":""}>${escapeHtml(v.name)}</option>`).join("")}
+        </select>
+        <button class="btn small" id="voiceTest-${l}">&#9658;</button>
+      </div>
+    </div>
+    ${options.length===0 ? `<div class="note" style="margin-top:-2px;">no ${LANGS[l].name} voice installed on this device — default system voice will be used</div>` : ``}
+  `;
+}
+function renderCustomWordsBlock(l){
+  const mine = (state.customItems||[]).filter(it=>it.lang===l);
+  return `
+    <div class="row-sub" style="margin:12px 0 6px; font-weight:600; color:var(--ink-soft);">${LANGS[l].name}</div>
+    ${mine.map(it=>`<div class="custom-item"><span>${escapeHtml(it.native)} — ${escapeHtml(it.en)}</span><button data-del="${it.id}">&times;</button></div>`).join("")}
+    <input type="text" id="cw-native-${l}" placeholder="word/phrase (native script)">
+    <input type="text" id="cw-translit-${l}" placeholder="transliteration (optional)">
+    <input type="text" id="cw-en-${l}" placeholder="English meaning">
+    <button class="btn small" id="addWord-${l}">Add word</button>
+  `;
+}
+function addCustomWord(l){
+  const native = document.getElementById("cw-native-"+l).value.trim();
+  const translit = document.getElementById("cw-translit-"+l).value.trim();
+  const en = document.getElementById("cw-en-"+l).value.trim();
+  if(!native || !en){ alert("Please fill in at least the word and its English meaning."); return; }
+  const id = "custom-"+l+"-"+Date.now()+"-"+Math.floor(Math.random()*1000);
+  state.customItems.push({ id, lang:l, tier:"vocab", native, translit: translit||null, en, cat:"custom" });
+  saveState();
+  rebuildItemsIndex();
+  renderSettings();
+}
+function deleteCustomWord(id){
+  state.customItems = (state.customItems||[]).filter(it=>it.id!==id);
+  delete state.items[id];
+  saveState();
+  rebuildItemsIndex();
+  renderSettings();
+}
+ 
+/* =========================================================
+   13. EXPORT
+   ========================================================= */
+function doExport(){
+  const cutoff = addDaysISO(-7);
+  const byLang = {}; LANG_ORDER.forEach(l=> byLang[l]=[]);
+  Object.values(ITEMS).forEach(item=>{
+    const rec = state.items[item.id]; if(!rec) return;
+    const recent = rec.history.filter(h=>h.date>=cutoff); if(recent.length===0) return;
+    byLang[item.lang].push({ native:item.native, translit:item.translit, en:item.en, category:item.cat, tier:item.tier, mastered:rec.mastered, streak:rec.streak, history:recent });
+  });
+  const payload = { generated: todayISO(), streak: state.streak, note:"Weekly log from the Five Languages app — paste this after the weekly lesson plan prompt.", languages: byLang };
+  const text = JSON.stringify(payload, null, 2);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=> alert("Weekly log copied. Paste it into a chat with your weekly lesson plan prompt."), ()=> fallbackCopy(text));
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta = document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); alert("Weekly log copied."); } catch(e){ prompt("Copy this manually:", text); }
+  document.body.removeChild(ta);
+}
+ 
+/* =========================================================
+   14. ONBOARDING
+   ========================================================= */
+function renderOnboarding(){
+  const s = state.settings;
+  $main.innerHTML = `
+    <div class="panel">
+      <div class="medallion"><div class="medallion-inner">5</div></div>
+      <h2 style="text-align:center;">Five Languages, One Adult</h2>
+      <div class="note" style="font-size:13px; text-align:center; margin-bottom:6px;">
+        One session, five languages, rotating — Arabic, isiZulu, Spanish, German, Russian, on a schedule based on how well you know each item.
+      </div>
+      <h3>Background</h3>
+      ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
+      <h3>Daily length</h3>
+      <div class="row"><div class="row-label">Default session</div>
+        <select id="budgetSelect2">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
+      </div>
+      <button class="btn primary" id="startBtn" style="margin-top:20px;">Start</button>
+      <div class="note">Add this page to your home screen to open it like an app. Everything runs locally — no account, no server.</div>
+    </div>
+  `;
+  document.querySelectorAll(".switch[data-lang]").forEach(sw=>{
+    sw.onclick = ()=>{ const l=sw.dataset.lang; s.background[l]=!s.background[l]; sw.classList.toggle("on", s.background[l]); };
+  });
+  document.getElementById("budgetSelect2").onchange = (e)=>{ s.dailyBudgetMin = parseInt(e.target.value,10); };
+  document.getElementById("startBtn").onclick = ()=>{ s.onboarded = true; saveState(); setView("dashboard"); };
+}
+ 
+/* =========================================================
+   15. MANIFEST + SERVICE WORKER
+   ========================================================= */
+(function setupManifest(){
+  const manifest = {
+    name: "Five Languages, One Adult",
+    short_name: "5 Languages",
+    start_url: "./index.html",
+    display: "standalone",
+    background_color: "#EDE0C8",
+    theme_color: "#7A2331",
+    icons: []
+  };
+  const json = JSON.stringify(manifest);
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  document.getElementById("manifestLink").setAttribute("href", "data:application/manifest+json;base64,"+b64);
+})();
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{
+    navigator.serviceWorker.register("./sw.js").catch(()=>{ /* offline caching unavailable, app still works online */ });
+  });
+}
+ 
+/* =========================================================
+   16. BOOT
+   ========================================================= */
+if(!state.settings.onboarded){ renderOnboarding(); document.querySelectorAll("#tabbar button").forEach(b=>b.style.visibility="hidden"); }
+else { document.querySelectorAll("#tabbar button").forEach(b=>b.style.visibility="visible"); setView("dashboard"); }
+ 
+})();
+</script>
+</body>
+</html>
+ 
