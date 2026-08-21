@@ -12,27 +12,11 @@
 <link id="manifestLink" rel="manifest" href="">
 <style>
   :root{
-    --parchment:#EDE0C8;
-    --parchment-2:#F4EBD6;
-    --card:#F6EEDB;
-    --card-edge: rgba(42,24,16,0.14);
-    --ink:#2B1810;
-    --ink-soft:#5A4630;
-    --muted:#8B7355;
-    --maroon:#7A2331;
-    --maroon-deep:#4A1620;
-    --gold:#B8863B;
-    --gold-light:#D4A855;
-    --teal:#1F6F6B;
-    --good:#3E7A4F;
-    --bad:#9C3B3B;
- 
-    --ar: var(--gold);
-    --zu: var(--teal);
-    --es: var(--maroon);
-    --de: #3B5680;
-    --ru: #8B4A6B;
- 
+    --parchment:#EDE0C8; --parchment-2:#F4EBD6; --card:#F6EEDB; --card-edge: rgba(42,24,16,0.14);
+    --ink:#2B1810; --ink-soft:#5A4630; --muted:#8B7355;
+    --maroon:#7A2331; --maroon-deep:#4A1620; --gold:#B8863B; --gold-light:#D4A855; --teal:#1F6F6B;
+    --good:#3E7A4F; --bad:#9C3B3B;
+    --ar: var(--gold); --zu: var(--teal); --es: var(--maroon); --de: #3B5680; --ru: #8B4A6B;
     --accent: var(--gold);
     --font-display: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Naskh Arabic",serif;
     --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -40,285 +24,188 @@
   }
   *{box-sizing:border-box;}
   html,body{height:100%;}
-  body{
-    margin:0;
-    background: var(--parchment);
-    color: var(--ink);
-    font-family: var(--font-ui);
-    -webkit-tap-highlight-color: transparent;
-    min-height:100%;
-    display:flex;
-    justify-content:center;
-    position:relative;
-  }
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    pointer-events:none;
-    opacity:.5;
-    background:
-      radial-gradient(ellipse 700px 420px at 10% -8%, rgba(122,35,49,0.07), transparent 60%),
-      radial-gradient(ellipse 600px 500px at 100% 110%, rgba(184,134,59,0.10), transparent 60%);
-    filter: url(#grain);
-  }
-  #app{
-    width:100%; max-width:480px; min-height:100dvh;
-    display:flex; flex-direction:column;
-    padding: env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0) 0;
-    position:relative; z-index:1;
-  }
- 
-  /* ---------- motif band ---------- */
-  .motif-band{
-    height:9px;
-    background-color: var(--maroon);
-    background-image:
-      linear-gradient(135deg, var(--gold-light) 25%, transparent 25.5%),
-      linear-gradient(-135deg, var(--gold-light) 25%, transparent 25.5%);
-    background-size: 9px 9px;
-    opacity:.85;
-  }
- 
-  /* ---------- header ---------- */
-  header{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:14px 18px 8px;
-  }
+  body{ margin:0; background: var(--parchment); color: var(--ink); font-family: var(--font-ui);
+    -webkit-tap-highlight-color: transparent; min-height:100%; display:flex; justify-content:center; position:relative; }
+  body::before{ content:""; position:fixed; inset:0; pointer-events:none; opacity:.5;
+    background: radial-gradient(ellipse 700px 420px at 10% -8%, rgba(122,35,49,0.07), transparent 60%),
+                radial-gradient(ellipse 600px 500px at 100% 110%, rgba(184,134,59,0.10), transparent 60%);
+    filter: url(#grain); }
+  #app{ width:100%; max-width:480px; min-height:100dvh; display:flex; flex-direction:column;
+    padding: env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0) 0; position:relative; z-index:1; }
+  .motif-band{ height:9px; background-color: var(--maroon);
+    background-image: linear-gradient(135deg, var(--gold-light) 25%, transparent 25.5%), linear-gradient(-135deg, var(--gold-light) 25%, transparent 25.5%);
+    background-size: 9px 9px; opacity:.85; }
+  header{ display:flex; align-items:center; justify-content:space-between; padding:14px 18px 8px; }
   .brand{ display:flex; align-items:center; gap:9px; }
-  .brand-mark{
-    width:26px; height:26px; position:relative; flex-shrink:0;
-  }
-  .brand-mark::before, .brand-mark::after{
-    content:""; position:absolute; inset:2px; border:1.6px solid var(--maroon);
-  }
+  .brand-mark{ width:24px; height:24px; position:relative; flex-shrink:0; cursor:pointer; }
+  .brand-mark::before, .brand-mark::after{ content:""; position:absolute; inset:2px; border:1.6px solid var(--maroon); }
   .brand-mark::after{ transform:rotate(45deg); }
-  .brand-name{
-    font-family: var(--font-mono); font-size:10.5px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--ink-soft);
-  }
-  .streak-pill{
-    display:flex; align-items:center; gap:5px;
-    background: rgba(122,35,49,0.08);
-    border:1px solid var(--card-edge);
-    border-radius:100px; padding:5px 11px;
-    font-family: var(--font-mono); font-size:12px; color:var(--maroon);
-  }
- 
+  .brand-name{ font-family: var(--font-mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-soft); cursor:pointer; }
+  .streak-pill{ display:flex; align-items:center; gap:5px; background: rgba(122,35,49,0.08); border:1px solid var(--card-edge);
+    border-radius:100px; padding:5px 11px; font-family: var(--font-mono); font-size:12px; color:var(--maroon); }
   main{ flex:1; display:flex; flex-direction:column; padding: 10px 18px 14px; min-height:0; }
- 
-  /* ---------- bottom nav ---------- */
-  nav.tabbar{
-    display:flex; border-top:1px solid var(--card-edge);
-    background: var(--parchment-2);
-  }
-  nav.tabbar button{
-    flex:1; background:none; border:none; padding:11px 4px 10px;
-    display:flex; flex-direction:column; align-items:center; gap:3px;
-    color: var(--muted); font-family:var(--font-ui); font-size:10.5px; cursor:pointer;
-  }
+  nav.tabbar{ display:flex; border-top:1px solid var(--card-edge); background: var(--parchment-2); }
+  nav.tabbar button{ flex:1; background:none; border:none; padding:11px 4px 10px; display:flex; flex-direction:column;
+    align-items:center; gap:3px; color: var(--muted); font-family:var(--font-ui); font-size:10px; cursor:pointer; }
   nav.tabbar button .ic{ font-size:18px; line-height:1; }
   nav.tabbar button.active{ color: var(--maroon); font-weight:600; }
  
-  /* ---------- dashboard ---------- */
-  .dash-hero{
-    text-align:center; padding: 10px 6px 4px;
-  }
-  .dash-hero h2{
-    font-family: var(--font-display); font-size:23px; margin:2px 0 4px; font-weight:600;
-  }
-  .dash-hero p{ font-size:13px; color:var(--ink-soft); margin:0; line-height:1.5; }
+  h2.title{ font-family: var(--font-display); font-size:21px; margin:2px 0 4px; font-weight:600; }
+  p.sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 14px; line-height:1.5; }
  
-  .medallion{
-    width:130px; height:130px; margin:14px auto 6px; position:relative;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .medallion::before, .medallion::after{
-    content:""; position:absolute; inset:8px; border:2px solid var(--accent);
-    filter: url(#inkTexture);
-  }
+  /* language grid */
+  .tile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tile{ position:relative; background: var(--card); border:1px solid var(--card-edge); border-radius:16px;
+    padding:14px 12px 12px; overflow:hidden; cursor:pointer; }
+  .tile::before{ content:""; position:absolute; top:0; left:0; right:0; height:4px; background: var(--tile-accent, var(--gold)); }
+  .tile .t-native{ font-family:var(--font-display); font-size:19px; font-weight:600; color:var(--maroon-deep); margin-top:4px; }
+  .tile .t-name{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .tile .t-badge{ position:absolute; top:10px; right:10px; min-width:20px; height:20px; padding:0 5px; border-radius:100px;
+    background: var(--tile-accent, var(--gold)); color:#fff; font-family:var(--font-mono); font-size:10.5px;
+    display:flex; align-items:center; justify-content:center; }
+  .tile .t-progress{ height:4px; background:rgba(42,24,16,0.09); border-radius:100px; margin-top:10px; overflow:hidden; }
+  .tile .t-progress-fill{ height:100%; background: var(--tile-accent, var(--gold)); }
+  .tile .t-note{ font-size:10px; color:var(--muted); margin-top:6px; font-family:var(--font-mono); }
+  .tile .t-neglect{ color:var(--bad); }
+ 
+  .medallion{ width:120px; height:120px; margin:10px auto 4px; position:relative; display:flex; align-items:center; justify-content:center; }
+  .medallion::before, .medallion::after{ content:""; position:absolute; inset:8px; border:2px solid var(--accent); filter: url(#inkTexture); }
   .medallion::after{ transform:rotate(45deg); }
-  .medallion-inner{
-    width:78px; height:78px; border-radius:50%; border:1px solid var(--accent);
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    font-family: var(--font-mono); font-size:26px; color:var(--maroon); font-weight:600;
-  }
+  .medallion-inner{ width:72px; height:72px; border-radius:50%; border:1px solid var(--accent); display:flex; align-items:center;
+    justify-content:center; text-align:center; font-family: var(--font-display); font-size:20px; color:var(--maroon); font-weight:600; }
  
-  .lang-grid{ display:flex; flex-direction:column; gap:9px; margin-top:16px; }
-  .lang-row{
-    display:flex; align-items:center; gap:12px;
-    background: var(--card); border:1px solid var(--card-edge); border-radius:14px;
-    padding:11px 14px;
-  }
-  .lang-row .swatch{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-  .lang-row .lr-name{ font-size:13.5px; flex:1; }
-  .lang-row .lr-note{ font-size:11px; font-family:var(--font-mono); color:var(--muted); }
-  .lang-row.starving{ border-color: rgba(156,59,59,0.4); background: rgba(156,59,59,0.06); }
-  .lang-row.starving .lr-note{ color: var(--bad); }
+  .insight-grid{ display:flex; gap:9px; margin:14px 0; }
+  .insight{ flex:1; background: var(--card); border:1px solid var(--card-edge); border-radius:14px; padding:12px 10px; text-align:center; }
+  .insight .n{ font-family:var(--font-mono); font-size:20px; color:var(--maroon-deep); font-weight:600; }
+  .insight .l{ font-size:10px; color:var(--muted); margin-top:2px; text-transform:uppercase; letter-spacing:.06em; }
  
-  .begin-btn{
-    margin-top:20px; width:100%; background: var(--maroon); color:var(--parchment-2);
-    border:none; border-radius:16px; padding:16px; font-size:15.5px; font-weight:600;
-    font-family: var(--font-ui); cursor:pointer; letter-spacing:.01em;
-  }
+  .science-note{ background: rgba(31,111,107,0.07); border:1px solid rgba(31,111,107,0.25); border-radius:14px;
+    padding:13px 15px; font-size:12px; color: var(--ink-soft); line-height:1.55; margin-top:6px; }
+  .science-note b{ color: var(--teal); }
+ 
+  .begin-btn{ margin-top:18px; width:100%; background: var(--maroon); color:var(--parchment-2); border:none; border-radius:16px;
+    padding:16px; font-size:15px; font-weight:600; font-family: var(--font-ui); cursor:pointer; }
   .begin-btn:active{ opacity:.88; }
+  .link-btn{ background:none; border:none; color:var(--maroon); font-size:13px; text-decoration:underline; cursor:pointer; padding:8px 0; }
  
-  .starving-banner{
-    margin-top:16px; background: rgba(156,59,59,0.08); border:1px solid rgba(156,59,59,0.3);
-    border-radius:14px; padding:13px 15px; font-size:12.5px; color: var(--maroon-deep); line-height:1.5;
-  }
-  .starving-banner b{ color: var(--bad); }
- 
-  /* ---------- session card ---------- */
-  .stamp-wrap{ display:flex; justify-content:center; margin: 4px 0 2px; }
-  .stamp{ width:104px; height:104px; position:relative; display:flex; align-items:center; justify-content:center; }
+  /* session card */
+  .stamp-wrap{ display:flex; justify-content:center; margin: 2px 0 2px; }
+  .stamp{ width:96px; height:96px; position:relative; display:flex; align-items:center; justify-content:center; }
   .stamp::before, .stamp::after{ content:""; position:absolute; inset:5px; border:2px solid var(--accent); filter:url(#inkTexture); }
   .stamp::after{ transform:rotate(45deg); }
-  .stamp-inner{
-    width:66px; height:66px; border-radius:50%; border:1px solid var(--accent);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
-  }
-  .stamp-native{ font-size:16px; font-weight:600; color:var(--maroon); }
-  .stamp-code{ font-family:var(--font-mono); font-size:8px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .stamp-inner{ width:60px; height:60px; border-radius:50%; border:1px solid var(--accent); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:1px; }
+  .stamp-native{ font-size:15px; font-weight:600; color:var(--maroon); }
+  .stamp-code{ font-family:var(--font-mono); font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
  
-  .card{
-    background: var(--card); border:1px solid var(--card-edge); border-radius:20px;
-    padding: 20px 20px 18px; margin-top:10px; flex:1; display:flex; flex-direction:column; min-height:0;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
-  }
-  .card-tag{
-    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.15em; text-transform:uppercase;
-    color: var(--accent); margin-bottom:12px; display:flex; align-items:center; gap:8px;
-  }
+  .card{ background: var(--card); border:1px solid var(--card-edge); border-radius:20px; padding: 18px 20px 16px; margin-top:8px;
+    flex:1; display:flex; flex-direction:column; min-height:0; box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset; }
+  .card-tag{ font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color: var(--accent);
+    margin-bottom:10px; display:flex; align-items:center; gap:8px; }
   .card-tag::before{ content:""; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  .card-tag .interleave-tag{ margin-left:auto; color:var(--teal); font-size:9.5px; }
  
-  .word-zone{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:6px; padding:4px 0 12px; }
-  .word-native{ font-family: var(--font-display); font-size:40px; font-weight:600; line-height:1.2; color:var(--maroon-deep); word-break:break-word; }
-  .word-translit{ font-family: var(--font-mono); font-size:15px; color: var(--ink-soft); }
-  .word-en{ margin-top:6px; font-size:14.5px; color: var(--muted); }
+  .word-zone{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:5px; padding:2px 0 10px; }
+  .word-native{ font-family: var(--font-display); font-size:38px; font-weight:600; line-height:1.2; color:var(--maroon-deep); word-break:break-word; }
+  .word-translit{ font-family: var(--font-mono); font-size:14.5px; color: var(--ink-soft); }
+  .word-en{ margin-top:5px; font-size:14px; color: var(--muted); }
+  .memory-hook{ margin-top:8px; font-size:11.5px; color:var(--teal); font-style:italic; }
  
-  .hidden-zone{ text-align:center; padding: 18px 0; }
-  .hidden-zone .ph{ font-size:34px; margin-bottom:8px; color: var(--accent); }
-  .hidden-zone .hint{ font-size:13px; color:var(--muted); margin-bottom:14px; }
+  .hidden-zone{ text-align:center; padding: 14px 0; }
+  .hidden-zone .ph{ font-size:32px; margin-bottom:6px; color: var(--accent); }
+  .hidden-zone .hint{ font-size:12.5px; color:var(--muted); margin-bottom:12px; }
  
-  .replay-btn, .reveal-btn{
-    margin-top:12px; background: rgba(122,35,49,0.06); border:1px solid var(--card-edge); color:var(--ink);
-    padding:8px 16px; border-radius:100px; font-size:12.5px; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
-  }
+  .replay-btn, .reveal-btn{ margin-top:10px; background: rgba(122,35,49,0.06); border:1px solid var(--card-edge); color:var(--ink);
+    padding:7px 15px; border-radius:100px; font-size:12px; display:inline-flex; align-items:center; gap:7px; cursor:pointer; }
   .reveal-btn{ background: var(--gold); color: var(--maroon-deep); border:none; font-weight:600; }
  
-  .action-zone{ display:flex; flex-direction:column; align-items:center; gap:12px; padding-top:4px; }
-  .mic-btn{
-    width:70px; height:70px; border-radius:50%; border:none; background: var(--maroon);
-    color: var(--parchment-2); font-size:24px; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition: transform .15s;
-  }
+  .action-zone{ display:flex; flex-direction:column; align-items:center; gap:11px; padding-top:2px; }
+  .mic-btn{ width:66px; height:66px; border-radius:50%; border:none; background: var(--maroon); color: var(--parchment-2);
+    font-size:23px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition: transform .15s; }
   .mic-btn:active{ transform:scale(.94); }
   .mic-btn.listening{ animation:pulse 1.1s infinite; }
-  @keyframes pulse{
-    0%{ box-shadow:0 0 0 0 rgba(122,35,49,.32); }
-    70%{ box-shadow:0 0 0 16px rgba(122,35,49,0); }
-    100%{ box-shadow:0 0 0 0 rgba(122,35,49,0); }
-  }
-  .mic-label{ font-size:12px; color:var(--muted); }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(122,35,49,.32);} 70%{ box-shadow:0 0 0 16px rgba(122,35,49,0);} 100%{ box-shadow:0 0 0 0 rgba(122,35,49,0);} }
+  .mic-label{ font-size:11.5px; color:var(--muted); }
  
-  .result-panel{ width:100%; display:flex; flex-direction:column; gap:11px; }
-  .heard-row{ background: rgba(122,35,49,0.05); border-radius:12px; padding:11px 13px; font-size:13.5px; color:var(--ink-soft); }
+  .result-panel{ width:100%; display:flex; flex-direction:column; gap:10px; }
+  .heard-row{ background: rgba(122,35,49,0.05); border-radius:12px; padding:10px 13px; font-size:13px; color:var(--ink-soft); }
   .heard-row b{ color:var(--ink); font-weight:600; }
   .meter{ height:7px; border-radius:100px; background:rgba(42,24,16,0.09); overflow:hidden; }
   .meter-fill{ height:100%; border-radius:100px; transition:width .4s; }
-  .meter-label{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10.5px; color:var(--muted); margin-top:4px; }
-  .verdict{ font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:6px; }
-  .verdict.pass{ color: var(--good); }
-  .verdict.fail{ color: var(--bad); }
+  .meter-label{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px; color:var(--muted); margin-top:4px; }
+  .verdict{ font-size:13px; font-weight:600; display:flex; align-items:center; gap:6px; }
+  .verdict.pass{ color: var(--good); } .verdict.fail{ color: var(--bad); }
+  .sm2-note{ font-family: var(--font-mono); font-size:10px; color:var(--muted); }
  
   .self-rate{ display:flex; gap:7px; }
-  .self-rate button{ flex:1; padding:9px 5px; border-radius:12px; border:1px solid var(--card-edge); background:rgba(122,35,49,0.03); color:var(--ink-soft); font-size:12px; cursor:pointer; }
+  .self-rate button{ flex:1; padding:9px 5px; border-radius:12px; border:1px solid var(--card-edge); background:rgba(122,35,49,0.03);
+    color:var(--ink-soft); font-size:11.5px; cursor:pointer; }
   .self-rate button.picked{ border-color: var(--accent); color: var(--maroon-deep); background: rgba(184,134,59,0.14); }
  
-  .next-btn{ margin-top:2px; background: var(--maroon-deep); color:var(--parchment-2); border:none; border-radius:14px; padding:14px; font-size:14.5px; font-weight:600; cursor:pointer; }
+  .next-btn{ margin-top:2px; background: var(--maroon-deep); color:var(--parchment-2); border:none; border-radius:14px; padding:13px;
+    font-size:14px; font-weight:600; cursor:pointer; }
   .next-btn:active{ opacity:.86; }
- 
-  .session-bar{ display:flex; justify-content:space-between; align-items:center; padding:10px 4px 2px; font-family:var(--font-mono); font-size:10.5px; color:var(--muted); }
+  .session-bar{ display:flex; justify-content:space-between; align-items:center; padding:9px 4px 2px; font-family:var(--font-mono);
+    font-size:10px; color:var(--muted); }
   .session-bar .dim{ opacity:.7; }
  
-  /* ---------- panels ---------- */
+  /* panels */
   .panel{ padding-top:2px; }
-  .panel h2{ font-family: var(--font-display); font-size:21px; margin:2px 0 14px; }
-  .panel h3{ font-size:11.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:20px 0 8px; }
+  .panel h3{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:18px 0 8px; }
   .row{ display:flex; align-items:center; justify-content:space-between; padding:11px 0; border-bottom:1px solid var(--card-edge); gap:12px; }
   .row:last-child{ border-bottom:none; }
-  .row-label{ font-size:14px; }
-  .row-sub{ font-size:11.5px; color:var(--muted); margin-top:2px; }
+  .row-label{ font-size:13.5px; }
+  .row-sub{ font-size:11px; color:var(--muted); margin-top:2px; }
   .switch{ position:relative; width:42px; height:25px; border-radius:100px; background:rgba(42,24,16,0.13); cursor:pointer; flex-shrink:0; }
   .switch.on{ background: var(--maroon); }
   .switch::after{ content:""; position:absolute; top:3px; left:3px; width:19px; height:19px; border-radius:50%; background:#fff; transition:left .18s; }
   .switch.on::after{ left:20px; }
-  select, input[type=text]{
-    background: var(--parchment-2); color:var(--ink); border:1px solid var(--card-edge);
-    border-radius:10px; padding:8px 10px; font-size:13.5px; font-family:var(--font-ui);
-  }
+  select, input[type=text]{ background: var(--parchment-2); color:var(--ink); border:1px solid var(--card-edge); border-radius:10px;
+    padding:8px 10px; font-size:13px; font-family:var(--font-ui); }
   input[type=text]{ width:100%; margin-bottom:8px; }
-  .btn{ width:100%; padding:12.5px; border-radius:12px; border:1px solid var(--card-edge); background: var(--card); color:var(--ink); font-size:13.5px; margin-top:9px; cursor:pointer; text-align:center; }
+  .btn{ width:100%; padding:12px; border-radius:12px; border:1px solid var(--card-edge); background: var(--card); color:var(--ink);
+    font-size:13px; margin-top:9px; cursor:pointer; text-align:center; }
   .btn.primary{ background: var(--maroon); color:var(--parchment-2); border:none; font-weight:600; }
   .btn.danger{ color: var(--bad); border-color: rgba(156,59,59,.35); }
-  .btn.small{ width:auto; padding:8px 14px; font-size:12.5px; }
-  .note{ font-size:12px; color:var(--muted); line-height:1.55; margin-top:7px; }
- 
-  .custom-item{ display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-edge); font-size:13px; }
+  .btn.small{ width:auto; padding:8px 14px; font-size:12px; }
+  .note{ font-size:11.5px; color:var(--muted); line-height:1.55; margin-top:7px; }
+  .custom-item{ display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-edge); font-size:12.5px; }
   .custom-item button{ background:none; border:none; color:var(--bad); font-size:15px; cursor:pointer; padding:2px 6px; }
  
-  .stat-grid{ display:flex; flex-direction:column; gap:10px; }
-  .stat-card{ background:var(--card); border:1px solid var(--card-edge); border-radius:14px; padding:13px 15px; }
-  .stat-card.starving{ border-color: rgba(156,59,59,0.4); }
+  .stat-card{ background:var(--card); border:1px solid var(--card-edge); border-radius:14px; padding:13px 15px; margin-bottom:10px; }
   .stat-top{ display:flex; justify-content:space-between; align-items:baseline; }
-  .stat-lang{ font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .stat-lang{ font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
   .stat-lang .dot{ width:8px; height:8px; border-radius:50%; }
-  .stat-pct{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); }
+  .stat-pct{ font-family:var(--font-mono); font-size:12px; color:var(--muted); }
   .bar-track{ height:6px; background:rgba(42,24,16,0.08); border-radius:100px; margin-top:8px; overflow:hidden; }
   .bar-fill{ height:100%; border-radius:100px; }
-  .stat-sub{ display:flex; gap:12px; margin-top:7px; font-size:10.5px; color:var(--muted); font-family:var(--font-mono); flex-wrap:wrap; }
-  .starving-tag{ display:inline-block; margin-top:7px; font-size:10.5px; color:var(--bad); font-family:var(--font-mono); }
+  .stat-sub{ display:flex; gap:12px; margin-top:7px; font-size:10px; color:var(--muted); font-family:var(--font-mono); flex-wrap:wrap; }
  
-  .empty-state{ text-align:center; padding: 50px 10px; color:var(--muted); }
-  .empty-state .big{ font-size:36px; margin-bottom:8px; color:var(--gold); }
- 
+  .empty-state{ text-align:center; padding: 46px 10px; color:var(--muted); }
+  .empty-state .big{ font-size:34px; margin-bottom:8px; color:var(--gold); }
   a{ color: var(--maroon); }
   ::selection{ background: rgba(184,134,59,0.35); }
 </style>
 </head>
 <body>
- 
 <svg width="0" height="0" style="position:absolute">
-  <filter id="inkTexture">
-    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise" seed="4"/>
-    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6"/>
-  </filter>
-  <filter id="grain">
-    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise" seed="7"/>
-    <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.09  0 0 0 0 0.06  0 0 0 0.03 0"/>
-  </filter>
+  <filter id="inkTexture"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="noise" seed="4"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.6"/></filter>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="noise" seed="7"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.09  0 0 0 0 0.06  0 0 0 0.03 0"/></filter>
 </svg>
- 
 <div id="app">
   <div class="motif-band"></div>
   <header>
-    <div class="brand">
-      <div class="brand-mark"></div>
-      <div class="brand-name">five languages</div>
-    </div>
+    <div class="brand"><div class="brand-mark" id="logoMark"></div><div class="brand-name" id="logoText">five languages</div></div>
     <div class="streak-pill" id="streakPill">&#128293; 0</div>
   </header>
- 
   <main id="main"></main>
- 
   <nav class="tabbar" id="tabbar">
-    <button data-view="dashboard"><span class="ic">&#9707;</span>Home</button>
+    <button data-view="home"><span class="ic">&#9707;</span>Home</button>
     <button data-view="session"><span class="ic">&#127908;</span>Practice</button>
     <button data-view="stats"><span class="ic">&#9776;</span>Stats</button>
     <button data-view="settings"><span class="ic">&#9881;</span>Settings</button>
   </nav>
 </div>
- 
 <script>
 (function(){
 "use strict";
@@ -431,43 +318,26 @@ const VOCAB = {
  
 const BUILTIN_ITEMS = {};
 LANG_ORDER.forEach(lang=>{
-  VOCAB[lang].words.forEach((w,i)=>{
-    const id = lang+"-vocab-"+i;
-    BUILTIN_ITEMS[id] = { id, lang, tier:"vocab", native:w[0], translit:w[1], en:w[2], cat:w[3] };
-  });
-  VOCAB[lang].phrases.forEach((p,i)=>{
-    const id = lang+"-phrase-"+i;
-    BUILTIN_ITEMS[id] = { id, lang, tier:"phrase", native:p[0], translit:p[1], en:p[2], cat:"phrase" };
-  });
+  VOCAB[lang].words.forEach((w,i)=>{ const id=lang+"-vocab-"+i; BUILTIN_ITEMS[id]={ id, lang, tier:"vocab", native:w[0], translit:w[1], en:w[2], cat:w[3] }; });
+  VOCAB[lang].phrases.forEach((p,i)=>{ const id=lang+"-phrase-"+i; BUILTIN_ITEMS[id]={ id, lang, tier:"phrase", native:p[0], translit:p[1], en:p[2], cat:"phrase" }; });
 });
- 
-let ITEMS = {};
-let ITEMS_BY_LANG = {};
+let ITEMS = {}; let ITEMS_BY_LANG = {};
 function rebuildItemsIndex(){
   ITEMS = Object.assign({}, BUILTIN_ITEMS);
-  (state.customItems||[]).forEach(it=> ITEMS[it.id] = it);
+  (state.customItems||[]).forEach(it=> ITEMS[it.id]=it);
   ITEMS_BY_LANG = {};
   LANG_ORDER.forEach(l=> ITEMS_BY_LANG[l] = Object.values(ITEMS).filter(it=>it.lang===l));
 }
  
 /* =========================================================
-   2. STATE
+   2. STATE  (records now use an SM-2 style schedule)
    ========================================================= */
 const STORAGE_KEY = "fivelang_state_v2";
- 
 function defaultState(){
   return {
-    settings: {
-      dailyBudgetMin: 15,
-      background: { ar:false, zu:true, es:false, de:false, ru:false },
-      newCapBackground: 5,
-      newCapZero: 3,
-      onboarded: false,
-      audioFirstMode: false,
-      voicePref: {}
-    },
-    items: {},
-    customItems: [],
+    settings: { dailyBudgetMin:15, background:{ar:false,zu:true,es:false,de:false,ru:false}, newCapBackground:5, newCapZero:3,
+      onboarded:false, audioFirstMode:false, voicePref:{} },
+    items: {}, customItems: [], notes: {}, activeLanguage: null,
     streak: { current:0, longest:0, lastActiveDate:null }
   };
 }
@@ -480,19 +350,23 @@ function loadState(){
     const d = defaultState();
     return {
       settings: Object.assign(d.settings, parsed.settings||{}),
-      items: parsed.items || {},
-      customItems: parsed.customItems || [],
+      items: parsed.items || {}, customItems: parsed.customItems || [], notes: parsed.notes || {},
+      activeLanguage: parsed.activeLanguage || null,
       streak: Object.assign(d.streak, parsed.streak||{})
     };
   }catch(e){ console.warn("could not read saved progress, starting fresh", e); return defaultState(); }
 }
-function saveState(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch(e){ console.warn("could not save progress", e); }
-}
+function saveState(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ console.warn("could not save progress", e); } }
 function getRecord(id){
-  if(!state.items[id]) state.items[id] = { introduced:false, streak:0, mastered:false, dueDate:null, lastSeen:null, history:[] };
-  return state.items[id];
+  if(!state.items[id]){
+    state.items[id] = { introduced:false, repetitions:0, easeFactor:2.5, interval:0, dueDate:null, lastSeen:null, history:[] };
+  }
+  const r = state.items[id];
+  // migrate any older shape gracefully
+  if(r.repetitions===undefined) r.repetitions = r.streak||0;
+  if(r.easeFactor===undefined) r.easeFactor = 2.5;
+  if(r.interval===undefined) r.interval = 0;
+  return r;
 }
 rebuildItemsIndex();
  
@@ -502,6 +376,7 @@ rebuildItemsIndex();
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function addDaysISO(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
 function isDue(dueDate){ return !dueDate || dueDate <= todayISO(); }
+function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
  
 /* =========================================================
    4. TEXT MATCHING
@@ -516,38 +391,45 @@ function normalizeText(s){
   return x;
 }
 function levenshtein(a,b){
-  const m=a.length, n=b.length;
-  if(m===0) return n; if(n===0) return m;
-  const dp = new Array(n+1);
-  for(let j=0;j<=n;j++) dp[j]=j;
-  for(let i=1;i<=m;i++){
-    let prev = dp[0]; dp[0]=i;
-    for(let j=1;j<=n;j++){
-      const tmp = dp[j];
-      dp[j] = Math.min(dp[j]+1, dp[j-1]+1, prev + (a[i-1]===b[j-1]?0:1));
-      prev = tmp;
-    }
-  }
+  const m=a.length,n=b.length; if(m===0) return n; if(n===0) return m;
+  const dp=new Array(n+1); for(let j=0;j<=n;j++) dp[j]=j;
+  for(let i=1;i<=m;i++){ let prev=dp[0]; dp[0]=i;
+    for(let j=1;j<=n;j++){ const tmp=dp[j]; dp[j]=Math.min(dp[j]+1,dp[j-1]+1,prev+(a[i-1]===b[j-1]?0:1)); prev=tmp; } }
   return dp[n];
 }
 function confidenceScore(expected, heard){
-  const e = normalizeText(expected), h = normalizeText(heard);
+  const e=normalizeText(expected), h=normalizeText(heard);
   if(!h) return 0;
   const dist = levenshtein(e,h);
-  const maxLen = Math.max(e.length, h.length, 1);
+  const maxLen = Math.max(e.length,h.length,1);
   return Math.max(0, Math.min(100, Math.round(100*(1-dist/maxLen))));
 }
 const PASS_THRESHOLD = 45;
  
 /* =========================================================
-   5. SPEECH
+   5. SPEECH — voice selection tuned for quality, not just locale match
    ========================================================= */
 let voicesCache = [];
 function loadVoices(){ voicesCache = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
 if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function scoreVoice(v){
+  let score = 0;
+  const n = (v.name||"").toLowerCase();
+  if(v.localService===false) score += 3;
+  if(/google|natural|neural|enhanced|premium|wavenet|siri/.test(n)) score += 4;
+  if(/compact|espeak|eloquence/.test(n)) score -= 3;
+  return score;
+}
 function voicesForLang(langTag){
   const prefix = langTag.split("-")[0];
-  return voicesCache.filter(v=> v.lang && v.lang.toLowerCase().startsWith(prefix));
+  return voicesCache.filter(v=> v.lang && v.lang.toLowerCase().startsWith(prefix)).sort((a,b)=> scoreVoice(b)-scoreVoice(a));
+}
+function bestVoiceForLang(lang){
+  const langTag = LANGS[lang].ttsLang;
+  const exact = voicesCache.filter(v=>v.lang===langTag);
+  const pool = exact.length ? exact : voicesForLang(langTag);
+  if(!pool.length) return null;
+  return pool.slice().sort((a,b)=> scoreVoice(b)-scoreVoice(a))[0];
 }
 function speak(text, lang){
   if(!window.speechSynthesis) return;
@@ -556,11 +438,10 @@ function speak(text, lang){
   const u = new SpeechSynthesisUtterance(text);
   u.lang = langTag;
   const preferred = state.settings.voicePref[lang];
-  let match = null;
-  if(preferred) match = voicesCache.find(v=> (v.name+"|"+v.lang)===preferred);
-  if(!match) match = voicesCache.find(v=>v.lang===langTag) || voicesForLang(langTag)[0];
+  let match = preferred ? voicesCache.find(v=> (v.name+"|"+v.lang)===preferred) : null;
+  if(!match) match = bestVoiceForLang(lang);
   if(match) u.voice = match;
-  u.rate = 0.9;
+  u.rate = 0.88;
   speechSynthesis.speak(u);
 }
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -578,7 +459,47 @@ function listenOnce(langTag, onResult, onError){
 }
  
 /* =========================================================
-   6. SESSION ENGINE
+   6. SM-2 SPACED REPETITION
+   Wozniak's SuperMemo-2 algorithm: after each review you rate recall quality
+   0-5; the interval before the next review grows by the "ease factor" as
+   long as recall stays good, and resets to 1 day the moment it doesn't.
+   ========================================================= */
+function sm2Update(rec, quality){
+  quality = Math.max(0, Math.min(5, quality));
+  if(quality < 3){
+    rec.repetitions = 0;
+    rec.interval = 1;
+  } else {
+    if(rec.repetitions === 0) rec.interval = 1;
+    else if(rec.repetitions === 1) rec.interval = 6;
+    else rec.interval = Math.round(rec.interval * rec.easeFactor);
+    rec.repetitions += 1;
+  }
+  rec.easeFactor = rec.easeFactor + (0.1 - (5-quality)*(0.08+(5-quality)*0.02));
+  if(rec.easeFactor < 1.3) rec.easeFactor = 1.3;
+  rec.dueDate = addDaysISO(rec.interval);
+}
+// Map (auto pass/fail, self-rating) onto the 0-5 SM-2 quality scale.
+function toQuality(hasAuto, passed, selfRating){
+  if(hasAuto){
+    if(passed){
+      if(selfRating==="good") return 5;
+      if(selfRating==="bad") return 3;
+      return 4; // unsure or no self-rating, but matched
+    } else {
+      if(selfRating==="good") return 2; // felt right but recognition didn't match — be lenient
+      if(selfRating==="unsure") return 2;
+      return 1;
+    }
+  } else {
+    if(selfRating==="good") return 4;
+    if(selfRating==="unsure") return 3;
+    return 1;
+  }
+}
+ 
+/* =========================================================
+   7. SESSION ENGINE — single active language, interleaved by category
    ========================================================= */
 let session = null;
 function newItemCap(lang){ return state.settings.background[lang] ? state.settings.newCapBackground : state.settings.newCapZero; }
@@ -587,15 +508,16 @@ function phrasesUnlocked(lang){
   return introducedVocab >= 20;
 }
 function startSession(){
+  if(!state.activeLanguage){ setView("home"); return; }
   session = {
-    startTime: Date.now(), turn:0, lastLang:null,
-    newIntroducedCount: Object.fromEntries(LANG_ORDER.map(l=>[l,0])),
-    requeue: [], currentItem:null, currentIsNew:false, revealed:!state.settings.audioFirstMode,
+    lang: state.activeLanguage, startTime: Date.now(), turn:0, lastCategory:null,
+    newIntroduced:0, requeue:[], currentItem:null, currentIsNew:false, revealed: !state.settings.audioFirstMode,
     answeredCount:0
   };
   setView("session");
 }
-function poolsForLang(lang){
+function poolForActiveLanguage(){
+  const lang = session.lang;
   const all = ITEMS_BY_LANG[lang];
   const unlocked = phrasesUnlocked(lang);
   const usable = all.filter(it=> it.tier==="vocab" || unlocked);
@@ -603,27 +525,24 @@ function poolsForLang(lang){
   const fresh = usable.filter(it=> !getRecord(it.id).introduced);
   return { due, fresh };
 }
+// interleaving: prefer a different category than last turn, and lean toward the most-overdue items
+function pickFromPool(pool){
+  if(!pool.length) return null;
+  const notSameCat = pool.filter(it=> it.cat !== session.lastCategory);
+  const candidates = notSameCat.length ? notSameCat : pool;
+  candidates.sort((a,b)=> (getRecord(a.id).dueDate||"") < (getRecord(b.id).dueDate||"") ? -1 : 1);
+  const top = candidates.slice(0, Math.min(5, candidates.length));
+  return top[Math.floor(Math.random()*top.length)];
+}
 function pickNextItem(){
   session.turn++;
   const t = session.turn;
-  const readyIdx0 = session.requeue.findIndex(r=> r.dueTurn<=t && r.lang!==session.lastLang);
-  const readyIdx = readyIdx0>=0 ? readyIdx0 : session.requeue.findIndex(r=> r.dueTurn<=t);
+  const readyIdx = session.requeue.findIndex(r=> r.dueTurn<=t);
   if(readyIdx>=0){ const entry = session.requeue.splice(readyIdx,1)[0]; return { item: ITEMS[entry.id], isNew:false }; }
-  const langsPreferred = LANG_ORDER.filter(l=>l!==session.lastLang);
-  function tryLangs(list){
-    const shuffled = [...list].sort(()=>Math.random()-0.5);
-    for(const lang of shuffled){
-      const {due} = poolsForLang(lang);
-      if(due.length){ due.sort((a,b)=> (getRecord(a.id).dueDate||"") < (getRecord(b.id).dueDate||"") ? -1:1); return { item:due[0], isNew:false }; }
-    }
-    for(const lang of shuffled){
-      if(session.newIntroducedCount[lang] >= newItemCap(lang)) continue;
-      const {fresh} = poolsForLang(lang);
-      if(fresh.length) return { item:fresh[0], isNew:true };
-    }
-    return null;
-  }
-  return tryLangs(langsPreferred) || tryLangs(LANG_ORDER);
+  const { due, fresh } = poolForActiveLanguage();
+  if(due.length) return { item: pickFromPool(due), isNew:false };
+  if(session.newIntroduced < newItemCap(session.lang) && fresh.length) return { item: pickFromPool(fresh), isNew:true };
+  return null;
 }
 function registerActivity(){
   const today = todayISO();
@@ -636,27 +555,22 @@ function registerActivity(){
   saveState();
   renderStreakPill();
 }
-function recordAnswer(item, passed, confidence, selfRating, heardText){
+function recordAnswer(item, hasAuto, passed, confidence, selfRating, heardText){
   const rec = getRecord(item.id);
   const wasIntroduced = rec.introduced;
   rec.introduced = true; rec.lastSeen = todayISO();
-  rec.history.push({ date: todayISO(), result: passed?"correct":"incorrect", confidence, selfRating: selfRating||null, heard: heardText||null });
+  const quality = toQuality(hasAuto, passed, selfRating);
+  sm2Update(rec, quality);
+  rec.history.push({ date: todayISO(), result: quality>=3?"correct":"incorrect", confidence, selfRating: selfRating||null, heard: heardText||null, quality });
   if(rec.history.length>60) rec.history = rec.history.slice(-60);
-  if(passed){
-    rec.streak = (rec.streak||0)+1;
-    if(rec.streak===1) rec.dueDate = addDaysISO(1);
-    else if(rec.streak===2) rec.dueDate = addDaysISO(4);
-    else{ if(!rec.mastered){ rec.mastered=true; rec.dueDate=addDaysISO(7);} else { rec.dueDate=addDaysISO(30); } }
-  } else {
-    rec.streak = 0; rec.mastered = false; rec.dueDate = addDaysISO(1);
-    session.requeue.push({ id:item.id, lang:item.lang, dueTurn: session.turn+3 });
-  }
-  if(!wasIntroduced) session.newIntroducedCount[item.lang] = (session.newIntroducedCount[item.lang]||0)+1;
+  if(quality < 3) session.requeue.push({ id:item.id, dueTurn: session.turn+3 });
+  if(!wasIntroduced) session.newIntroduced++;
   saveState();
+  return quality;
 }
  
 /* =========================================================
-   7. STATS
+   8. STATS / INSIGHTS
    ========================================================= */
 function computeWeeklyStats(){
   const cutoff = addDaysISO(-7);
@@ -666,22 +580,27 @@ function computeWeeklyStats(){
     ITEMS_BY_LANG[l].forEach(item=>{
       const rec = state.items[item.id]; if(!rec) return;
       if(rec.introduced) introduced++;
-      if(rec.mastered) mastered++;
-      rec.history.filter(h=>h.date>=cutoff).forEach(h=>{ total++; if(h.result==="correct") correct++; });
+      if((rec.repetitions||0) >= 4) mastered++;
+      (rec.history||[]).filter(h=>h.date>=cutoff).forEach(h=>{ total++; if(h.result==="correct") correct++; });
     });
     stats[l] = { correct, total, pct: total? Math.round(100*correct/total): null, mastered, introduced, poolSize: ITEMS_BY_LANG[l].length };
   });
   return stats;
 }
-function findStarving(stats){
-  const withData = LANG_ORDER.filter(l=> stats[l].total>=5);
-  if(withData.length<2) return [];
-  const avg = withData.reduce((s,l)=>s+stats[l].pct,0)/withData.length;
-  return withData.filter(l=> stats[l].pct <= avg-15 && stats[l].pct<70);
+function langInsights(l){
+  const items = ITEMS_BY_LANG[l];
+  let due=0, introduced=0, mastered=0, lastDate=null;
+  items.forEach(it=>{
+    const rec = state.items[it.id]; if(!rec) return;
+    if(rec.introduced){ introduced++; if(isDue(rec.dueDate)) due++; if((rec.repetitions||0)>=4) mastered++; }
+    if(rec.lastSeen && (!lastDate || rec.lastSeen>lastDate)) lastDate = rec.lastSeen;
+  });
+  const daysSince = lastDate ? daysBetween(lastDate, todayISO()) : null;
+  return { due, introduced, mastered, poolSize: items.length, daysSince, hasStarted: introduced>0 };
 }
  
 /* =========================================================
-   8. RENDER HELPERS
+   9. RENDER HELPERS
    ========================================================= */
 const $main = document.getElementById("main");
 function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
@@ -689,61 +608,94 @@ function setAccent(lang){
   const v = getComputedStyle(document.documentElement).getPropertyValue(LANGS[lang].accentVar).trim();
   document.documentElement.style.setProperty("--accent", v);
 }
-function renderStreakPill(){
-  document.getElementById("streakPill").innerHTML = "&#128293; " + (state.streak.current||0);
-}
-function setActiveTab(view){
-  document.querySelectorAll("#tabbar button").forEach(b=> b.classList.toggle("active", b.dataset.view===view));
-}
+function renderStreakPill(){ document.getElementById("streakPill").innerHTML = "&#128293; " + (state.streak.current||0); }
+function setActiveTab(view){ document.querySelectorAll("#tabbar button").forEach(b=> b.classList.toggle("active", b.dataset.view===view)); }
  
 let currentView = null;
 function setView(view){
   currentView = view;
-  setActiveTab(view);
-  if(view==="dashboard") renderDashboard();
-  else if(view==="session"){ if(!session) startSession(); else renderSessionTurn(); }
+  setActiveTab(view==="langDetail" ? "home" : view);
+  if(view==="home") renderHome();
+  else if(view==="langDetail") renderLangDetail(state.activeLanguage);
+  else if(view==="session"){
+    if(!state.activeLanguage){ renderPickLanguagePrompt(); return; }
+    if(!session || session.lang!==state.activeLanguage) startSession(); else renderSessionTurn();
+  }
   else if(view==="stats") renderStats();
   else if(view==="settings") renderSettings();
 }
-document.querySelectorAll("#tabbar button").forEach(b=>{
-  b.onclick = ()=> setView(b.dataset.view);
-});
+document.querySelectorAll("#tabbar button").forEach(b=> b.onclick = ()=> setView(b.dataset.view));
+document.getElementById("logoMark").onclick = ()=> setView("home");
+document.getElementById("logoText").onclick = ()=> setView("home");
 renderStreakPill();
  
 /* =========================================================
-   9. DASHBOARD
+   10. HOME — language picker
    ========================================================= */
-function renderDashboard(){
+function renderHome(){
   document.documentElement.style.setProperty("--accent","var(--maroon)");
-  const stats = computeWeeklyStats();
-  const starving = findStarving(stats);
-  const bg = state.settings.background;
   const rows = LANG_ORDER.map(l=>{
-    const s = stats[l];
-    const isStarving = starving.includes(l);
-    const note = s.total ? (s.pct+"% this week") : "no reviews yet";
-    return `<div class="lang-row ${isStarving?'starving':''}">
-      <div class="swatch" style="background:var(${LANGS[l].accentVar})"></div>
-      <div class="lr-name">${LANGS[l].name}${bg[l]?' <span style="color:var(--muted); font-size:11px;">&middot; background</span>':''}</div>
-      <div class="lr-note">${isStarving?'&#9888; falling behind':note}</div>
+    const ins = langInsights(l);
+    const accent = `var(${LANGS[l].accentVar})`;
+    const pct = ins.poolSize ? Math.round(100*ins.mastered/ins.poolSize) : 0;
+    let note = ins.hasStarted ? (ins.due>0 ? ins.due+" due today" : "up to date") : "not started";
+    let neglect = ins.daysSince!==null && ins.daysSince>=7;
+    return `<div class="tile" style="--tile-accent:${accent}" data-lang="${l}">
+      <div class="t-badge" style="${ins.due>0?'':'display:none;'}">${ins.due}</div>
+      <div class="t-native" dir="${LANGS[l].rtl?'rtl':'ltr'}">${escapeHtml(LANGS[l].native)}</div>
+      <div class="t-name">${LANGS[l].name}</div>
+      <div class="t-progress"><div class="t-progress-fill" style="width:${pct}%"></div></div>
+      <div class="t-note ${neglect?'t-neglect':''}">${neglect? ins.daysSince+"d since last review" : note}</div>
     </div>`;
   }).join("");
- 
   $main.innerHTML = `
-    <div class="dash-hero">
-      <div class="medallion"><div class="medallion-inner">5</div></div>
-      <h2>Five Languages, One Adult</h2>
-      <p>Arabic &middot; isiZulu &middot; Spanish &middot; German &middot; Russian, one rotating session.</p>
-    </div>
-    <div class="lang-grid">${rows}</div>
-    ${starving.length ? `<div class="starving-banner"><b>${starving.map(l=>LANGS[l].name).join(" and ")}</b> ${starving.length>1?'are':'is'} trailing the rest this week — worth consolidating (fewer new words, more review) rather than pushing forward.</div>` : ``}
-    <button class="begin-btn" id="beginBtn">Begin today's session</button>
+    <h2 class="title">Which language today?</h2>
+    <p class="sub">Pick one to focus on. Your progress in every language is saved independently — switch anytime.</p>
+    <div class="tile-grid">${rows}</div>
+    <div class="science-note"><b>Why one at a time:</b> practice testing and spaced review are the two techniques with the strongest research backing for durable memory (Dunlosky et al., 2013) — both work best without divided attention pulling focus across languages in the same sitting.</div>
   `;
-  document.getElementById("beginBtn").onclick = ()=> startSession();
+  document.querySelectorAll(".tile").forEach(t=>{
+    t.onclick = ()=>{ state.activeLanguage = t.dataset.lang; saveState(); setView("langDetail"); };
+  });
 }
  
 /* =========================================================
-   10. SESSION VIEW
+   11. LANGUAGE DETAIL
+   ========================================================= */
+function renderLangDetail(lang){
+  setAccent(lang);
+  const ins = langInsights(lang);
+  const stats = computeWeeklyStats()[lang];
+  $main.innerHTML = `
+    <div class="medallion"><div class="medallion-inner" dir="${LANGS[lang].rtl?'rtl':'ltr'}">${escapeHtml(LANGS[lang].native)}</div></div>
+    <h2 class="title" style="text-align:center;">${LANGS[lang].name}</h2>
+    <p class="sub" style="text-align:center;">${ins.hasStarted ? (ins.introduced+" of "+ins.poolSize+" items introduced &middot; "+ins.mastered+" mastered") : "Not started yet"}</p>
+    <div class="insight-grid">
+      <div class="insight"><div class="n">${ins.due}</div><div class="l">due today</div></div>
+      <div class="insight"><div class="n">${stats.pct===null?"—":stats.pct+"%"}</div><div class="l">this week</div></div>
+      <div class="insight"><div class="n">${state.settings.background[lang]?"yes":"no"}</div><div class="l">background</div></div>
+    </div>
+    <div class="science-note"><b>How today is scheduled:</b> items due today were last answered just long enough ago that recall should feel effortful but not impossible — the "desirable difficulty" zone spaced repetition (SM-2) aims for. New items are interleaved with review items rather than blocked together, since mixed practice improves later recall even though it feels harder in the moment (Rohrer &amp; Taylor, 2007).</div>
+    <button class="begin-btn" id="beginBtn">Begin session</button>
+    <button class="link-btn" id="switchBtn">Switch language</button>
+  `;
+  document.getElementById("beginBtn").onclick = ()=> startSession();
+  document.getElementById("switchBtn").onclick = ()=> setView("home");
+}
+function renderPickLanguagePrompt(){
+  document.documentElement.style.setProperty("--accent","var(--maroon)");
+  $main.innerHTML = `
+    <div class="empty-state">
+      <div class="big">&#10022;</div>
+      <div style="font-size:14.5px; color:var(--ink); margin-bottom:14px; font-family:var(--font-display);">Pick a language to practice first</div>
+      <button class="btn primary" id="goHomeBtn">Choose a language</button>
+    </div>
+  `;
+  document.getElementById("goHomeBtn").onclick = ()=> setView("home");
+}
+ 
+/* =========================================================
+   12. SESSION VIEW
    ========================================================= */
 function renderSessionTurn(){
   if(!session){ startSession(); return; }
@@ -752,7 +704,7 @@ function renderSessionTurn(){
   session.currentItem = picked.item;
   session.currentIsNew = picked.isNew;
   session.revealed = !state.settings.audioFirstMode;
-  session.lastLang = picked.item.lang;
+  session.lastCategory = picked.item.cat;
   renderCurrentCard();
   speak(picked.item.native, picked.item.lang);
 }
@@ -761,13 +713,14 @@ function renderCurrentCard(){
   const lang = LANGS[item.lang];
   setAccent(item.lang);
   const catLabel = item.tier==="phrase" ? "phrase" : item.cat;
-  const budgetMs = state.settings.dailyBudgetMin*60000;
   const elapsedMs = Date.now()-session.startTime;
+  const hook = state.notes[item.id];
  
   const wordZoneHtml = session.revealed ? `
     <div class="word-native" dir="${lang.rtl?'rtl':'ltr'}">${escapeHtml(item.native)}</div>
     ${item.translit ? `<div class="word-translit">${escapeHtml(item.translit)}</div>` : ``}
     <div class="word-en">${escapeHtml(item.en)}</div>
+    ${hook ? `<div class="memory-hook">&#9998; ${escapeHtml(hook)}</div>` : ``}
     <button class="replay-btn" id="replayBtn">&#9658; hear it again</button>
   ` : `
     <div class="hidden-zone">
@@ -784,7 +737,7 @@ function renderCurrentCard(){
       <div class="stamp-code">${item.lang}</div>
     </div></div></div>
     <div class="card">
-      <div class="card-tag">${lang.name} &middot; ${catLabel}${session.currentIsNew?" &middot; new":""}</div>
+      <div class="card-tag">${lang.name} &middot; ${catLabel}${session.currentIsNew?" &middot; new":""}<span class="interleave-tag">${session.lastCategory?'':''}</span></div>
       <div class="word-zone">${wordZoneHtml}</div>
       <div class="action-zone" id="actionZone">
         <button class="mic-btn" id="micBtn">&#127908;</button>
@@ -793,7 +746,7 @@ function renderCurrentCard(){
     </div>
     <div class="session-bar">
       <span>${Math.floor(elapsedMs/60000)}:${String(Math.floor((elapsedMs%60000)/1000)).padStart(2,"0")} <span class="dim">/ ${state.settings.dailyBudgetMin}:00</span></span>
-      <span>${session.answeredCount} reviewed today</span>
+      <span>${session.answeredCount} reviewed</span>
     </div>
   `;
   document.getElementById("replayBtn").onclick = ()=> speak(item.native, item.lang);
@@ -804,7 +757,7 @@ function renderCurrentCard(){
 function handleMic(item, lang){
   const micBtn = document.getElementById("micBtn");
   const micLabel = document.getElementById("micLabel");
-  if(!recognitionSupported()){ showResult(item, lang, null, null); return; }
+  if(!recognitionSupported()){ showResult(item, lang, false, null, null); return; }
   micBtn.classList.add("listening"); micLabel.textContent = "listening…"; micBtn.disabled = true;
   listenOnce(lang.ttsLang,
     (alternatives)=>{
@@ -812,7 +765,7 @@ function handleMic(item, lang){
       let best = { text:"", score:-1 };
       alternatives.forEach(t=>{ const s = confidenceScore(item.native, t); if(s>best.score) best = { text:t, score:s }; });
       session.revealed = true;
-      showResult(item, lang, best.text, best.score);
+      showResult(item, lang, true, best.text, best.score);
     },
     (err)=>{
       micBtn.classList.remove("listening");
@@ -821,9 +774,8 @@ function handleMic(item, lang){
     }
   );
 }
-function showResult(item, lang, heardText, confidence){
-  const passed = confidence!==null && confidence>=PASS_THRESHOLD;
-  const hasAuto = confidence!==null;
+function showResult(item, lang, hasAuto, heardText, confidence){
+  const passed = hasAuto && confidence!==null && confidence>=PASS_THRESHOLD;
   renderCurrentCard();
   const $zone = document.getElementById("actionZone");
   $zone.innerHTML = `
@@ -852,9 +804,8 @@ function showResult(item, lang, heardText, confidence){
     b.onclick = ()=>{ document.querySelectorAll("#selfRate button").forEach(x=>x.classList.remove("picked")); b.classList.add("picked"); selfRating=b.dataset.v; };
   });
   document.getElementById("nextBtn").onclick = ()=>{
-    const finalPassed = hasAuto ? passed : (selfRating==="good");
     if(session.answeredCount===0) registerActivity();
-    recordAnswer(item, finalPassed, hasAuto?confidence:null, selfRating, heardText);
+    recordAnswer(item, hasAuto, passed, hasAuto?confidence:null, selfRating, heardText);
     session.answeredCount++;
     renderSessionTurn();
   };
@@ -865,104 +816,97 @@ function renderAllCaughtUp(){
   $main.innerHTML = `
     <div class="empty-state">
       <div class="big">&#10022;</div>
-      <div style="font-size:15px; color:var(--ink); margin-bottom:6px; font-family:var(--font-display);">All caught up for now</div>
+      <div style="font-size:15px; color:var(--ink); margin-bottom:6px; font-family:var(--font-display);">All caught up in ${LANGS[session.lang].name} for now</div>
       <div style="font-size:12.5px;">${session.answeredCount} reviewed &middot; ${elapsedMin} min this session</div>
       <button class="btn primary" id="restartBtn" style="margin-top:20px;">start another round</button>
-      <button class="btn" id="homeBtn">back to home</button>
+      <button class="btn" id="homeBtn">choose a different language</button>
     </div>
   `;
   document.getElementById("restartBtn").onclick = ()=> startSession();
-  document.getElementById("homeBtn").onclick = ()=> setView("dashboard");
+  document.getElementById("homeBtn").onclick = ()=> setView("home");
 }
  
 /* =========================================================
-   11. STATS VIEW
+   13. STATS VIEW
    ========================================================= */
 function renderStats(){
   document.documentElement.style.setProperty("--accent","var(--maroon)");
   const stats = computeWeeklyStats();
-  const starving = findStarving(stats);
   let rows = "";
   LANG_ORDER.forEach(l=>{
     const s = stats[l];
     const accent = `var(${LANGS[l].accentVar})`;
-    const isStarving = starving.includes(l);
     rows += `
-      <div class="stat-card ${isStarving?'starving':''}">
-        <div class="stat-top">
-          <div class="stat-lang"><span class="dot" style="background:${accent}"></span>${LANGS[l].name}</div>
-          <div class="stat-pct">${s.pct===null? "no data yet" : s.pct+"% this week"}</div>
-        </div>
+      <div class="stat-card">
+        <div class="stat-top"><div class="stat-lang"><span class="dot" style="background:${accent}"></span>${LANGS[l].name}</div>
+        <div class="stat-pct">${s.pct===null? "no data yet" : s.pct+"% this week"}</div></div>
         <div class="bar-track"><div class="bar-fill" style="width:${s.pct||0}%; background:${accent}"></div></div>
-        <div class="stat-sub">
-          <span>${s.introduced}/${s.poolSize} introduced</span>
-          <span>${s.mastered} mastered</span>
-          <span>${s.total} reviews (7d)</span>
-        </div>
-        ${isStarving ? `<div class="starving-tag">&#9888; falling behind the others — consider consolidating</div>` : ``}
-      </div>
-    `;
+        <div class="stat-sub"><span>${s.introduced}/${s.poolSize} introduced</span><span>${s.mastered} mastered</span><span>${s.total} reviews (7d)</span></div>
+      </div>`;
   });
   $main.innerHTML = `
-    <div class="panel">
-      <h2>This week</h2>
-      <div class="row" style="border:none; padding-top:0;">
-        <div class="row-label">Current streak</div>
-        <div class="row-sub" style="margin:0; font-size:13px;">&#128293; ${state.streak.current||0} days &middot; best ${state.streak.longest||0}</div>
-      </div>
-      <div class="stat-grid" style="margin-top:8px;">${rows}</div>
-      <button class="btn" id="exportBtn2">Copy this week's log (for weekly plan prompt)</button>
+    <h2 class="title">This week</h2>
+    <div class="row" style="border:none; padding:0 0 10px;">
+      <div class="row-label">Current streak</div>
+      <div class="row-sub" style="margin:0; font-size:13px;">&#128293; ${state.streak.current||0} days &middot; best ${state.streak.longest||0}</div>
     </div>
+    ${rows}
+    <button class="btn" id="exportBtn2">Copy this week's log (for weekly plan prompt)</button>
   `;
   document.getElementById("exportBtn2").onclick = doExport;
 }
  
 /* =========================================================
-   12. SETTINGS VIEW
+   14. SETTINGS VIEW
    ========================================================= */
 function renderSettings(){
   document.documentElement.style.setProperty("--accent","var(--maroon)");
   const s = state.settings;
   $main.innerHTML = `
-    <div class="panel">
-      <h2>Settings</h2>
+    <h2 class="title">Settings</h2>
  
-      <h3>Daily session</h3>
-      <div class="row">
-        <div><div class="row-label">Default length</div><div class="row-sub">tracked, not enforced</div></div>
-        <select id="budgetSelect">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
-      </div>
-      <div class="row">
-        <div><div class="row-label">Audio-first mode</div><div class="row-sub">hide text until you attempt recall from audio alone</div></div>
-        <div class="switch ${s.audioFirstMode?'on':''}" id="audioFirstSwitch"></div>
-      </div>
- 
-      <h3>Background</h3>
-      <div class="note" style="margin-top:-4px; margin-bottom:4px;">More new words per session (${s.newCapBackground} vs ${s.newCapZero}) for languages you already know.</div>
-      ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
- 
-      <h3>Voices</h3>
-      <div class="note" style="margin-top:-4px; margin-bottom:6px;">
-        These are synthetic voices built into your browser/device — not recordings of real speakers. I can't source or fabricate
-        genuine native-speaker audio here, but you can pick whichever installed voice sounds best for each language.
-      </div>
-      ${LANG_ORDER.map(l=>renderVoiceRow(l)).join("")}
- 
-      <h3>Add your own words</h3>
-      <div class="note" style="margin-top:-4px;">Extend any language's vocabulary — your additions get reviewed on the same schedule.</div>
-      ${LANG_ORDER.map(l=>renderCustomWordsBlock(l)).join("")}
- 
-      <h3>Your data</h3>
-      <button class="btn" id="exportBtn">Copy this week's log (for weekly plan prompt)</button>
-      <button class="btn danger" id="resetBtn">Reset all progress</button>
-      <div class="note">Progress is stored only on this device, in this browser. Nothing is uploaded anywhere.</div>
+    <h3>Why this app is built this way</h3>
+    <div class="science-note">
+      Three techniques with strong research support drive the scheduling: <b>spaced repetition</b> (SM-2 — items resurface right before you'd
+      likely forget them, Wozniak 1987, built on Ebbinghaus's forgetting curve), <b>retrieval practice</b> (saying the word out loud beats
+      re-reading it — Roediger &amp; Karpicke, 2006), and <b>interleaving</b> (mixing categories instead of blocking them — harder in the
+      moment, better for long-term recall — Rohrer &amp; Taylor, 2007). Dunlosky et al.'s 2013 review of ten study techniques rated practice
+      testing and spaced practice the two highest-value methods, which is why the app leans on those rather than things like re-reading or
+      highlighting, which the same review found do little.
     </div>
+ 
+    <h3>Daily session</h3>
+    <div class="row"><div><div class="row-label">Default length</div><div class="row-sub">tracked, not enforced</div></div>
+      <select id="budgetSelect">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
+    </div>
+    <div class="row"><div><div class="row-label">Audio-first mode</div><div class="row-sub">hide text until you attempt recall from audio alone</div></div>
+      <div class="switch ${s.audioFirstMode?'on':''}" id="audioFirstSwitch"></div>
+    </div>
+ 
+    <h3>Background</h3>
+    <div class="note" style="margin-top:-4px; margin-bottom:4px;">More new words per session (${s.newCapBackground} vs ${s.newCapZero}) for languages you already know.</div>
+    ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
+ 
+    <h3>Voices</h3>
+    <div class="note" style="margin-top:-4px; margin-bottom:6px;">
+      These are synthetic voices built into your browser/device — not recordings of real speakers. I can't source or fabricate genuine
+      native-speaker audio here. What I can do is default to the best-sounding installed voice for each language (network/"natural"-labelled
+      voices are preferred automatically) and let you override the choice below if your device has more than one option.
+    </div>
+    ${LANG_ORDER.map(l=>renderVoiceRow(l)).join("")}
+ 
+    <h3>Add your own words</h3>
+    <div class="note" style="margin-top:-4px;">Extend any language's vocabulary — your additions get reviewed on the same schedule.</div>
+    ${LANG_ORDER.map(l=>renderCustomWordsBlock(l)).join("")}
+ 
+    <h3>Your data</h3>
+    <button class="btn" id="exportBtn">Copy this week's log (for weekly plan prompt)</button>
+    <button class="btn danger" id="resetBtn">Reset all progress</button>
+    <div class="note">Progress is stored only on this device, in this browser. Nothing is uploaded anywhere.</div>
   `;
  
   document.getElementById("budgetSelect").onchange = (e)=>{ s.dailyBudgetMin = parseInt(e.target.value,10); saveState(); };
-  document.getElementById("audioFirstSwitch").onclick = (el)=>{
-    s.audioFirstMode = !s.audioFirstMode; saveState(); renderSettings();
-  };
+  document.getElementById("audioFirstSwitch").onclick = ()=>{ s.audioFirstMode = !s.audioFirstMode; saveState(); renderSettings(); };
   document.querySelectorAll(".switch[data-lang]").forEach(sw=>{
     sw.onclick = ()=>{ const l=sw.dataset.lang; s.background[l]=!s.background[l]; sw.classList.toggle("on", s.background[l]); saveState(); };
   });
@@ -970,17 +914,15 @@ function renderSettings(){
     const sel = document.getElementById("voiceSelect-"+l);
     if(sel) sel.onchange = (e)=>{ s.voicePref[l] = e.target.value; saveState(); };
     const testBtn = document.getElementById("voiceTest-"+l);
-    if(testBtn) testBtn.onclick = ()=>{ const sample = VOCAB[l].words[0][0]; speak(sample, l); };
+    if(testBtn) testBtn.onclick = ()=>{ speak(VOCAB[l].words[0][0], l); };
     const addBtn = document.getElementById("addWord-"+l);
     if(addBtn) addBtn.onclick = ()=> addCustomWord(l);
   });
-  document.querySelectorAll(".custom-item button[data-del]").forEach(b=>{
-    b.onclick = ()=> deleteCustomWord(b.dataset.del);
-  });
+  document.querySelectorAll(".custom-item button[data-del]").forEach(b=> b.onclick = ()=> deleteCustomWord(b.dataset.del));
   document.getElementById("exportBtn").onclick = doExport;
   document.getElementById("resetBtn").onclick = ()=>{
     if(confirm("This clears all review history and progress on this device. Continue?")){
-      state.items = {}; saveState(); session = null; setView("dashboard");
+      state.items = {}; saveState(); session = null; setView("home");
     }
   };
 }
@@ -989,11 +931,10 @@ function renderVoiceRow(l){
   const options = voicesForLang(langTag);
   const current = state.settings.voicePref[l] || "";
   return `
-    <div class="row">
-      <div class="row-label">${LANGS[l].name}</div>
+    <div class="row"><div class="row-label">${LANGS[l].name}</div>
       <div style="display:flex; gap:6px; align-items:center;">
         <select id="voiceSelect-${l}" style="max-width:150px;">
-          <option value="">auto</option>
+          <option value="">auto (best available)</option>
           ${options.map(v=>`<option value="${escapeHtml(v.name+"|"+v.lang)}" ${current===(v.name+"|"+v.lang)?"selected":""}>${escapeHtml(v.name)}</option>`).join("")}
         </select>
         <button class="btn small" id="voiceTest-${l}">&#9658;</button>
@@ -1020,28 +961,25 @@ function addCustomWord(l){
   if(!native || !en){ alert("Please fill in at least the word and its English meaning."); return; }
   const id = "custom-"+l+"-"+Date.now()+"-"+Math.floor(Math.random()*1000);
   state.customItems.push({ id, lang:l, tier:"vocab", native, translit: translit||null, en, cat:"custom" });
-  saveState();
-  rebuildItemsIndex();
-  renderSettings();
+  saveState(); rebuildItemsIndex(); renderSettings();
 }
 function deleteCustomWord(id){
   state.customItems = (state.customItems||[]).filter(it=>it.id!==id);
-  delete state.items[id];
-  saveState();
-  rebuildItemsIndex();
-  renderSettings();
+  delete state.items[id]; delete state.notes[id];
+  saveState(); rebuildItemsIndex(); renderSettings();
 }
  
 /* =========================================================
-   13. EXPORT
+   15. EXPORT
    ========================================================= */
 function doExport(){
   const cutoff = addDaysISO(-7);
   const byLang = {}; LANG_ORDER.forEach(l=> byLang[l]=[]);
   Object.values(ITEMS).forEach(item=>{
     const rec = state.items[item.id]; if(!rec) return;
-    const recent = rec.history.filter(h=>h.date>=cutoff); if(recent.length===0) return;
-    byLang[item.lang].push({ native:item.native, translit:item.translit, en:item.en, category:item.cat, tier:item.tier, mastered:rec.mastered, streak:rec.streak, history:recent });
+    const recent = (rec.history||[]).filter(h=>h.date>=cutoff); if(recent.length===0) return;
+    byLang[item.lang].push({ native:item.native, translit:item.translit, en:item.en, category:item.cat, tier:item.tier,
+      repetitions:rec.repetitions, easeFactor:Math.round(rec.easeFactor*100)/100, interval:rec.interval, history:recent });
   });
   const payload = { generated: todayISO(), streak: state.streak, note:"Weekly log from the Five Languages app — paste this after the weekly lesson plan prompt.", languages: byLang };
   const text = JSON.stringify(payload, null, 2);
@@ -1050,68 +988,54 @@ function doExport(){
   } else fallbackCopy(text);
 }
 function fallbackCopy(text){
-  const ta = document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select();
+  const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select();
   try{ document.execCommand("copy"); alert("Weekly log copied."); } catch(e){ prompt("Copy this manually:", text); }
   document.body.removeChild(ta);
 }
  
 /* =========================================================
-   14. ONBOARDING
+   16. ONBOARDING
    ========================================================= */
 function renderOnboarding(){
   const s = state.settings;
   $main.innerHTML = `
-    <div class="panel">
-      <div class="medallion"><div class="medallion-inner">5</div></div>
-      <h2 style="text-align:center;">Five Languages, One Adult</h2>
-      <div class="note" style="font-size:13px; text-align:center; margin-bottom:6px;">
-        One session, five languages, rotating — Arabic, isiZulu, Spanish, German, Russian, on a schedule based on how well you know each item.
-      </div>
-      <h3>Background</h3>
-      ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
-      <h3>Daily length</h3>
-      <div class="row"><div class="row-label">Default session</div>
-        <select id="budgetSelect2">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
-      </div>
-      <button class="btn primary" id="startBtn" style="margin-top:20px;">Start</button>
-      <div class="note">Add this page to your home screen to open it like an app. Everything runs locally — no account, no server.</div>
+    <div class="medallion"><div class="medallion-inner">5</div></div>
+    <h2 class="title" style="text-align:center;">Five Languages, One Adult</h2>
+    <p class="sub" style="text-align:center;">Pick one language at a time to focus on. Spaced repetition (SM-2) and interleaving handle the scheduling.</p>
+    <h3>Background</h3>
+    ${LANG_ORDER.map(l=>`<div class="row"><div class="row-label">${LANGS[l].name}</div><div class="switch ${s.background[l]?'on':''}" data-lang="${l}"></div></div>`).join("")}
+    <h3>Daily length</h3>
+    <div class="row"><div class="row-label">Default session</div>
+      <select id="budgetSelect2">${[10,15,20,30,45].map(m=>`<option value="${m}" ${m===s.dailyBudgetMin?"selected":""}>${m} min</option>`).join("")}</select>
     </div>
+    <button class="btn primary" id="startBtn" style="margin-top:20px;">Choose your first language</button>
+    <div class="note">Everything runs locally — no account, no server. Add this page to your home screen to open it like an app.</div>
   `;
   document.querySelectorAll(".switch[data-lang]").forEach(sw=>{
     sw.onclick = ()=>{ const l=sw.dataset.lang; s.background[l]=!s.background[l]; sw.classList.toggle("on", s.background[l]); };
   });
   document.getElementById("budgetSelect2").onchange = (e)=>{ s.dailyBudgetMin = parseInt(e.target.value,10); };
-  document.getElementById("startBtn").onclick = ()=>{ s.onboarded = true; saveState(); setView("dashboard"); };
+  document.getElementById("startBtn").onclick = ()=>{ s.onboarded = true; saveState(); setView("home"); };
 }
  
 /* =========================================================
-   15. MANIFEST + SERVICE WORKER
+   17. MANIFEST + SERVICE WORKER
    ========================================================= */
 (function setupManifest(){
-  const manifest = {
-    name: "Five Languages, One Adult",
-    short_name: "5 Languages",
-    start_url: "./index.html",
-    display: "standalone",
-    background_color: "#EDE0C8",
-    theme_color: "#7A2331",
-    icons: []
-  };
-  const json = JSON.stringify(manifest);
-  const b64 = btoa(unescape(encodeURIComponent(json)));
+  const manifest = { name:"Five Languages, One Adult", short_name:"5 Languages", start_url:"./index.html",
+    display:"standalone", background_color:"#EDE0C8", theme_color:"#7A2331", icons:[] };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(manifest))));
   document.getElementById("manifestLink").setAttribute("href", "data:application/manifest+json;base64,"+b64);
 })();
 if("serviceWorker" in navigator){
-  window.addEventListener("load", ()=>{
-    navigator.serviceWorker.register("./sw.js").catch(()=>{ /* offline caching unavailable, app still works online */ });
-  });
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("./sw.js").catch(()=>{}); });
 }
  
 /* =========================================================
-   16. BOOT
+   18. BOOT
    ========================================================= */
 if(!state.settings.onboarded){ renderOnboarding(); document.querySelectorAll("#tabbar button").forEach(b=>b.style.visibility="hidden"); }
-else { document.querySelectorAll("#tabbar button").forEach(b=>b.style.visibility="visible"); setView("dashboard"); }
+else { document.querySelectorAll("#tabbar button").forEach(b=>b.style.visibility="visible"); setView("home"); }
  
 })();
 </script>
